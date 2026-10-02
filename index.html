@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>داشبورد الكابتن 🚀</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .time-block {
+      transition: all 0.2s ease;
+      border-right: 3px solid transparent;
+    }
+    .time-block:hover { transform: translateX(-2px); }
+    .time-block.sleep    { border-right-color: #6366f1; background: rgba(99,102,241,0.08); }
+    .time-block.morning  { border-right-color: #f59e0b; background: rgba(245,158,11,0.08); }
+    .time-block.study    { border-right-color: #10b981; background: rgba(16,185,129,0.08); }
+    .time-block.work     { border-right-color: #3b82f6; background: rgba(59,130,246,0.08); }
+    .time-block.gym      { border-right-color: #ef4444; background: rgba(239,68,68,0.08); }
+    .time-block.personal { border-right-color: #8b5cf6; background: rgba(139,92,246,0.08); }
+    .time-block.break    { border-right-color: #6b7280; background: rgba(107,114,128,0.08); }
+    .time-block.prayer   { border-right-color: #14b8a6; background: rgba(20,184,166,0.08); }
+
+    .time-block.active {
+      box-shadow: 0 0 0 2px var(--primary);
+      transform: translateX(-4px) scale(1.01);
+    }
+
+    .pomodoro-ring {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .habit-btn { transition: all 0.15s ease; }
+    .habit-btn:hover { transform: scale(1.05); }
+    .habit-btn.done { background: #10b981; color: white; }
+    .habit-btn.missed { background: #ef4444; color: white; opacity: 0.7; }
+
+    .tab-btn { transition: all 0.2s ease; cursor: pointer; }
+    .tab-btn.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .project-card {
+      transition: transform 0.2s ease;
+      border-right: 3px solid;
+    }
+    .project-card:hover { transform: translateX(-2px); }
+
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .pulsing { animation: pulse-ring 1.5s infinite; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-in { animation: slideIn 0.3s ease forwards; }
+
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .alarm-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] min-h-screen">
+
+<div class="max-w-5xl mx-auto p-4">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-5">
+    <div>
+      <h1 class="text-2xl font-bold text-[var(--foreground)]">🚀 مركز القيادة</h1>
+      <p class="text-[var(--muted-foreground)] text-sm" id="date-display"></p>
+    </div>
+    <div class="text-left">
+      <div class="text-3xl font-bold text-[var(--primary)]" id="clock">00:00:00</div>
+      <div class="text-xs text-[var(--muted-foreground)]" id="current-block-label">جاري التحديد...</div>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="grid grid-cols-4 gap-3 mb-5" id="stats-row">
+    <div class="stat-card">
+      <div class="text-2xl font-bold text-[#6366f1]" id="stat-sleep">—</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-1">ساعات النوم</div>
+    </div>
+    <div class="stat-card">
+      <div class="text-2xl font-bold text-[#10b981]" id="stat-study">0</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-1">جلسات مذاكرة</div>
+    </div>
+    <div class="stat-card">
+      <div class="text-2xl font-bold text-[#ef4444]" id="stat-gym">—</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-1">الجيم</div>
+    </div>
+    <div class="stat-card">
+      <div class="text-2xl font-bold text-[#3b82f6]" id="stat-tasks">0%</div>
+      <div class="text-xs text-[var(--muted-foreground)] mt-1">إنجاز اليوم</div>
+    </div>
+  </div>
+
+  <!-- Main Tabs -->
+  <div class="flex gap-2 mb-4 bg-[var(--card)] border border-[var(--border)] rounded-xl p-1">
+    <button class="tab-btn active flex-1 py-2 rounded-lg text-sm font-semibold" onclick="switchTab('schedule')">📅 الجدول</button>
+    <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-semibold" onclick="switchTab('pomodoro')">⏱️ بومودورو</button>
+    <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-semibold" onclick="switchTab('projects')">🗂️ مشاريعي</button>
+    <button class="tab-btn flex-1 py-2 rounded-lg text-sm font-semibold" onclick="switchTab('habits')">✅ عادات</button>
+  </div>
+
+  <!-- TAB: SCHEDULE -->
+  <div id="tab-schedule" class="slide-in">
+    <div class="section-title">📆 جدولك اليومي المُحسَّن</div>
+    <div class="space-y-1" id="schedule-list"></div>
+    <div class="mt-3 p-3 bg-[var(--card)] border border-[var(--border)] rounded-xl text-xs text-[var(--muted-foreground)]">
+      💡 <strong>قاعدة ذهبية:</strong> المستطيل المضيء = وقتك الحالي. ركّز عليه فقط، مش كل حاجة في نفس الوقت.
+    </div>
+  </div>
+
+  <!-- TAB: POMODORO -->
+  <div id="tab-pomodoro" class="hidden slide-in">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-6 text-center">
+      <div class="section-title">⏱️ تقنية بومودورو للمذاكرة</div>
+
+      <!-- Mode selector -->
+      <div class="flex gap-2 justify-center mb-5">
+        <button id="mode-work" onclick="setPomodoroMode('work')" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">مذاكرة 25د</button>
+        <button id="mode-short" onclick="setPomodoroMode('short')" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)]">راحة قصيرة 5د</button>
+        <button id="mode-long" onclick="setPomodoroMode('long')" class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)]">راحة طويلة 15د</button>
+      </div>
+
+      <!-- SVG Ring -->
+      <div class="relative inline-block mb-4">
+        <svg width="180" height="180">
+          <circle cx="90" cy="90" r="80" fill="none" stroke="var(--border)" stroke-width="10"/>
+          <circle id="pomo-ring" cx="90" cy="90" r="80" fill="none"
+            stroke="var(--primary)" stroke-width="10"
+            stroke-linecap="round"
+            stroke-dasharray="502.65"
+            stroke-dashoffset="0"
+            class="pomodoro-ring"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div class="text-4xl font-bold" id="pomo-display">25:00</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-1" id="pomo-label">مذاكرة</div>
+          <div class="text-xs text-[var(--muted-foreground)]">جلسة <span id="pomo-count">1</span>/4</div>
+        </div>
+      </div>
+
+      <!-- Subject input -->
+      <div class="mb-4">
+        <input id="pomo-subject" type="text" placeholder="مادة المذاكرة (مثلاً: ميكانيكا طيران)" class="w-full px-4 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] text-sm text-center outline-none focus:border-[var(--primary)]"/>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex gap-3 justify-center">
+        <button onclick="startPomodoro()" id="pomo-start-btn" class="px-6 py-2.5 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg font-semibold text-sm hover:opacity-90 transition">▶ ابدأ</button>
+        <button onclick="pausePomodoro()" class="px-6 py-2.5 bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] rounded-lg font-semibold text-sm hover:opacity-90 transition">⏸ وقّف</button>
+        <button onclick="resetPomodoro()" class="px-6 py-2.5 bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] rounded-lg font-semibold text-sm hover:opacity-90 transition">↺ إعادة</button>
+      </div>
+
+      <!-- Session log -->
+      <div class="mt-5 text-right">
+        <div class="section-title">سجل جلسات اليوم</div>
+        <div id="pomo-log" class="space-y-1 max-h-36 overflow-y-auto text-sm text-[var(--muted-foreground)]">
+          <p class="text-center text-xs">لا توجد جلسات بعد — اضغط ابدأ! 🎯</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PROJECTS -->
+  <div id="tab-projects" class="hidden slide-in">
+    <div class="section-title">🗂️ جبهاتك النشطة — ابقى مسيطر</div>
+    <div class="space-y-2" id="projects-list"></div>
+    <div class="mt-3 p-3 bg-[var(--card)] border border-[var(--border)] rounded-xl">
+      <div class="text-xs font-semibold text-[var(--foreground)] mb-2">➕ أضف جبهة جديدة</div>
+      <div class="flex gap-2">
+        <input id="new-project-name" type="text" placeholder="اسم المشروع..." class="flex-1 px-3 py-1.5 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] text-sm outline-none focus:border-[var(--primary)]"/>
+        <select id="new-project-color" class="px-3 py-1.5 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] text-sm outline-none">
+          <option value="#3b82f6">🔵 أزرق</option>
+          <option value="#10b981">🟢 أخضر</option>
+          <option value="#f59e0b">🟡 أصفر</option>
+          <option value="#ef4444">🔴 أحمر</option>
+          <option value="#8b5cf6">🟣 بنفسجي</option>
+        </select>
+        <button onclick="addProject()" class="px-4 py-1.5 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg text-sm font-semibold">أضف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: HABITS -->
+  <div id="tab-habits" class="hidden slide-in">
+    <div class="section-title">✅ عاداتك اليومية</div>
+    <div class="grid grid-cols-2 gap-3" id="habits-grid"></div>
+    <div class="mt-4 p-3 bg-[var(--card)] border border-[var(--border)] rounded-xl">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm font-semibold">إنجاز اليوم</span>
+        <span class="text-sm font-bold text-[var(--primary)]" id="habits-percent">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill bg-[var(--primary)]" id="habits-progress" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Streak -->
+    <div class="mt-3 grid grid-cols-7 gap-1">
+      <div class="section-title col-span-7">سترايك آخر أسبوع</div>
+      <div id="streak-grid" class="contents"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== DATA ==========
+const schedule = [
+  { time: "00:00", end: "07:00", label: "😴 نوم عميق — ممنوع أي حاجة تانية", type: "sleep", priority: "SACRED" },
+  { time: "07:00", end: "07:30", label: "🌅 صحيان + صلاة الفجر + وضوء + شرب ميه", type: "morning", priority: "HIGH" },
+  { time: "07:30", end: "08:00", label: "🍳 فطار + مراجعة التو-دو ليست بتاعتك", type: "morning", priority: "HIGH" },
+  { time: "08:00", end: "10:30", label: "✈️ مذاكرة هندسة طيران — بومودورو × 5", type: "study", priority: "HIGH", tag: "DEEP WORK" },
+  { time: "10:30", end: "10:45", label: "☕ راحة — ابتعد عن الشاشة تماماً", type: "break", priority: "MED" },
+  { time: "10:45", end: "12:30", label: "📄 أوراق بحثية — كتابة أو مراجعة", type: "study", priority: "HIGH", tag: "RESEARCH" },
+  { time: "12:30", end: "13:00", label: "🕌 صلاة الظهر + غدا سريع", type: "prayer", priority: "HIGH" },
+  { time: "13:00", end: "15:00", label: "💼 الشركتين + مشاريع الفري لانسر", type: "work", priority: "HIGH", tag: "BUSINESS" },
+  { time: "15:00", end: "15:30", label: "🕌 صلاة العصر + قيلولة خفيفة 15 دقيقة", type: "prayer", priority: "HIGH" },
+  { time: "15:30", end: "17:30", label: "🌍 سفير دولي + تواصل وتحضيرات المسابقة", type: "work", priority: "HIGH", tag: "COMPETITION" },
+  { time: "17:30", end: "18:00", label: "🚶 مشي خفيف + صلاة المغرب", type: "prayer", priority: "MED" },
+  { time: "18:00", end: "18:30", label: "🍽️ عشاء", type: "personal", priority: "MED" },
+  { time: "19:00", end: "20:30", label: "🏋️ جيم أو سباحة — مش قابل للتفاوض!", type: "gym", priority: "HIGH", tag: "HEALTH" },
+  { time: "20:30", end: "21:00", label: "🕌 صلاة العشاء + استحمام", type: "prayer", priority: "HIGH" },
+  { time: "21:00", end: "22:00", label: "📖 مراجعة خفيفة + تحضير اليوم الجاي", type: "study", priority: "MED" },
+  { time: "22:00", end: "22:30", label: "📵 وقت شخصي — موبايل بدون ضغط", type: "personal", priority: "LOW" },
+  { time: "22:30", end: "23:00", label: "🧘 تهيئة للنوم — اضبط منبهك دلوقتي", type: "sleep", priority: "HIGH" },
+  { time: "23:00", end: "24:00", label: "😴 نوم — ضروري تنام قبل 11!", type: "sleep", priority: "SACRED" },
+];
+
+const projects = [
+  { name: "شركة ١", progress: 30, color: "#3b82f6", nextAction: "حدد الـ MVP", urgent: true },
+  { name: "شركة ٢", progress: 15, color: "#8b5cf6", nextAction: "اعمل خطة العمل", urgent: false },
+  { name: "الأوراق البحثية (٣ أوراق)", progress: 40, color: "#10b981", nextAction: "اكمل الورقة الأولى", urgent: true },
+  { name: "سفير دولي - المسابقة", progress: 60, color: "#f59e0b", nextAction: "حضّر التقرير الأسبوعي", urgent: true },
+  { name: "فري لانسر", progress: 25, color: "#ef4444", nextAction: "ابعت الأوفر", urgent: false },
+  { name: "هندسة طيران", progress: 50, color: "#14b8a6", nextAction: "ذاكر مادة الميكانيكا", urgent: true },
+];
+
+const habits = [
+  { id: "sleep", name: "نمت ≥ 7 ساعات", emoji: "😴", done: false },
+  { id: "study", name: "ذاكرت ≥ 2 ساعة", emoji: "📚", done: false },
+  { id: "gym", name: "جيم أو سباحة", emoji: "🏋️", done: false },
+  { id: "pray", name: "الصلوات الخمس", emoji: "🕌", done: false },
+  { id: "water", name: "شربت ≥ 2 لتر ميه", emoji: "💧", done: false },
+  { id: "noPhone", name: "بعيد عن الموبايل في DEEP WORK", emoji: "📵", done: false },
+  { id: "plan", name: "حضرت اليوم الجاي", emoji: "📋", done: false },
+  { id: "read", name: "قرأت 10 دقايق", emoji: "📖", done: false },
+];
+
+let pomodoroInterval = null;
+let pomodoroSeconds = 25 * 60;
+let pomodoroRunning = false;
+let pomodoroMode = 'work';
+let pomodoroSessionCount = 0;
+let pomodoroTotalSeconds = 25 * 60;
+let pomodoroLog = [];
+let customProjects = [];
+let habitState = {};
+let currentTab = 'schedule';
+
+// ========== CLOCK ==========
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+
+  const days = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('date-display').textContent = `${days[now.getDay()]}، ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  updateActiveBlock(now);
+}
+
+function timeToMinutes(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function updateActiveBlock(now) {
+  const currentMin = now.getHours() * 60 + now.getMinutes();
+  let found = null;
+  schedule.forEach((block, i) => {
+    const startM = timeToMinutes(block.time);
+    let endM = timeToMinutes(block.end);
+    if (endM === 0) endM = 1440;
+    const el = document.getElementById(`block-${i}`);
+    if (!el) return;
+    if (currentMin >= startM && currentMin < endM) {
+      el.classList.add('active');
+      found = block;
+    } else {
+      el.classList.remove('active');
+    }
+  });
+  if (found) {
+    document.getElementById('current-block-label').textContent = found.label.replace(/^[^\s]+\s/, '');
+  }
+}
+
+// ========== SCHEDULE ==========
+function renderSchedule() {
+  const now = new Date();
+  const currentMin = now.getHours() * 60 + now.getMinutes();
+  const container = document.getElementById('schedule-list');
+  container.innerHTML = '';
+  schedule.forEach((block, i) => {
+    const startM = timeToMinutes(block.time);
+    let endM = timeToMinutes(block.end);
+    if (endM === 0) endM = 1440;
+    const isPast = currentMin >= endM;
+    const div = document.createElement('div');
+    div.id = `block-${i}`;
+    div.className = `time-block ${block.type} rounded-lg p-2.5 flex items-center gap-3 ${isPast ? 'opacity-40' : ''}`;
+
+    const dur = endM - startM;
+    const durStr = dur >= 60 ? `${Math.floor(dur/60)}س ${dur%60 ? (dur%60)+'د' : ''}`.trim() : `${dur}د`;
+
+    const priorityColors = { SACRED: '#6366f1', HIGH: '#10b981', MED: '#f59e0b', LOW: '#6b7280' };
+    const pColor = priorityColors[block.priority] || '#6b7280';
+
+    div.innerHTML = `
+      <div class="text-left min-w-[70px]">
+        <div class="text-xs font-bold text-[var(--foreground)]">${block.time}</div>
+        <div class="text-xs text-[var(--muted-foreground)]">${durStr}</div>
+      </div>
+      <div class="flex-1">
+        <div class="text-sm font-medium text-[var(--foreground)]">${block.label}</div>
+        ${block.tag ? `<span class="alarm-badge mt-0.5" style="background:${pColor}22;color:${pColor}">${block.tag}</span>` : ''}
+      </div>
+      ${isPast ? '<span class="text-lg">✓</span>' : ''}
+    `;
+    container.appendChild(div);
+  });
+  updateActiveBlock(now);
+}
+
+// ========== TABS ==========
+function switchTab(tab) {
+  ['schedule','pomodoro','projects','habits'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.add('hidden');
+    document.querySelector(`[onclick="switchTab('${t}')"]`).classList.remove('active');
+  });
+  document.getElementById(`tab-${tab}`).classList.remove('hidden');
+  document.getElementById(`tab-${tab}`).classList.add('slide-in');
+  document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+  currentTab = tab;
+  if (tab === 'projects') renderProjects();
+  if (tab === 'habits') renderHabits();
+}
+
+// ========== POMODORO ==========
+function setPomodoroMode(mode) {
+  pomodoroMode = mode;
+  const times = { work: 25*60, short: 5*60, long: 15*60 };
+  const labels = { work: 'مذاكرة', short: 'راحة قصيرة', long: 'راحة طويلة' };
+  pomodoroSeconds = times[mode];
+  pomodoroTotalSeconds = times[mode];
+  if (pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; pomodoroRunning = false; }
+  document.getElementById('pomo-display').textContent = formatTime(pomodoroSeconds);
+  document.getElementById('pomo-label').textContent = labels[mode];
+  document.getElementById('pomo-ring').style.strokeDashoffset = '0';
+  ['work','short','long'].forEach(m => {
+    const btn = document.getElementById(`mode-${m}`);
+    if (m === mode) {
+      btn.classList.add('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+      btn.classList.remove('bg-[var(--card)]','border','border-[var(--border)]','text-[var(--foreground)]');
+    } else {
+      btn.classList.remove('bg-[var(--primary)]','text-[var(--primary-foreground)]');
+      btn.classList.add('bg-[var(--card)]','border','border-[var(--border)]','text-[var(--foreground)]');
+    }
+  });
+}
+
+function formatTime(s) {
+  const m = Math.floor(s/60);
+  const sec = s % 60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function startPomodoro() {
+  if (pomodoroRunning) return;
+  pomodoroRunning = true;
+  document.getElementById('pomo-start-btn').textContent = '⏳ شغال...';
+  pomodoroInterval = setInterval(() => {
+    pomodoroSeconds--;
+    const pct = 1 - pomodoroSeconds / pomodoroTotalSeconds;
+    document.getElementById('pomo-ring').style.strokeDashoffset = String(502.65 * pct);
+    document.getElementById('pomo-display').textContent = formatTime(pomodoroSeconds);
+    if (pomodoroSeconds <= 0) {
+      clearInterval(pomodoroInterval);
+      pomodoroRunning = false;
+      document.getElementById('pomo-start-btn').textContent = '▶ ابدأ';
+      if (pomodoroMode === 'work') {
+        pomodoroSessionCount++;
+        document.getElementById('pomo-count').textContent = String((pomodoroSessionCount % 4) + 1);
+        document.getElementById('stat-study').textContent = String(pomodoroSessionCount);
+        const subject = document.getElementById('pomo-subject').value || 'مذاكرة عامة';
+        const now = new Date();
+        pomodoroLog.unshift({ subject, time: `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}` });
+        renderPomodoroLog();
+        updateDayProgress();
+        try { new Audio("data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Hy8GFkKkEiCjFCgA").play(); } catch(e){}
+        alert('🎉 أنهيت جلسة مذاكرة! خد راحة تستاهلها.');
+      }
+      setPomodoroMode(pomodoroMode === 'work' ? (pomodoroSessionCount % 4 === 0 ? 'long' : 'short') : 'work');
+    }
+  }, 1000);
+}
+
+function pausePomodoro() {
+  if (pomodoroRunning) {
+    clearInterval(pomodoroInterval);
+    pomodoroRunning = false;
+    document.getElementById('pomo-start-btn').textContent = '▶ ابدأ';
+  }
+}
+
+function resetPomodoro() {
+  pausePomodoro();
+  setPomodoroMode(pomodoroMode);
+}
+
+function renderPomodoroLog() {
+  const log = document.getElementById('pomo-log');
+  if (pomodoroLog.length === 0) {
+    log.innerHTML = '<p class="text-center text-xs">لا توجد جلسات بعد — اضغط ابدأ! 🎯</p>';
+    return;
+  }
+  log.innerHTML = pomodoroLog.map(s =>
+    `<div class="flex justify-between items-center py-1 border-b border-[var(--border)]">
+      <span>📚 ${s.subject}</span>
+      <span class="text-xs">${s.time}</span>
+    </div>`
+  ).join('');
+}
+
+// ========== PROJECTS ==========
+function renderProjects() {
+  const all = [...projects, ...customProjects];
+  const container = document.getElementById('projects-list');
+  container.innerHTML = all.map((p, i) => `
+    <div class="project-card bg-[var(--card)] border border-[var(--border)] rounded-xl p-3" style="border-right-color:${p.color}">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full" style="background:${p.color}"></div>
+          <span class="font-semibold text-sm">${p.name}</span>
+          ${p.urgent ? '<span class="alarm-badge" style="background:#ef444422;color:#ef4444">🔥 عاجل</span>' : ''}
+        </div>
+        <div class="text-xs font-bold" style="color:${p.color}">${p.progress}%</div>
+      </div>
+      <div class="progress-bar mb-2">
+        <div class="progress-fill" style="width:${p.progress}%;background:${p.color}"></div>
+      </div>
+      ${p.nextAction ? `<div class="text-xs text-[var(--muted-foreground)]">⚡ الخطوة الجاية: ${p.nextAction}</div>` : ''}
+      <input type="range" min="0" max="100" value="${p.progress}" class="w-full mt-2 accent-[var(--primary)]" oninput="updateProgress(${i}, this.value)"/>
+    </div>
+  `).join('');
+}
+
+function updateProgress(i, val) {
+  const all = [...projects, ...customProjects];
+  if (i < projects.length) projects[i].progress = parseInt(val);
+  else customProjects[i - projects.length].progress = parseInt(val);
+  renderProjects();
+  updateDayProgress();
+}
+
+function addProject() {
+  const name = document.getElementById('new-project-name').value.trim();
+  const color = document.getElementById('new-project-color').value;
+  if (!name) return;
+  customProjects.push({ name, progress: 0, color, nextAction: 'حدد أول خطوة', urgent: false });
+  document.getElementById('new-project-name').value = '';
+  renderProjects();
+}
+
+// ========== HABITS ==========
+function renderHabits() {
+  const grid = document.getElementById('habits-grid');
+  grid.innerHTML = habits.map(h => {
+    const state = habitState[h.id] || 'none';
+    const doneClass = state === 'done' ? 'done' : state === 'missed' ? 'missed' : '';
+    const emoji = state === 'done' ? '✅' : state === 'missed' ? '❌' : '⭕';
+    return `
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3">
+        <div class="text-xl mb-1">${h.emoji}</div>
+        <div class="text-sm font-semibold mb-2">${h.name}</div>
+        <div class="flex gap-1">
+          <button class="habit-btn ${state==='done'?'done':''} flex-1 py-1 rounded-lg text-xs border border-[var(--border)]" onclick="setHabit('${h.id}','done')">✅ تم</button>
+          <button class="habit-btn ${state==='missed'?'missed':''} flex-1 py-1 rounded-lg text-xs border border-[var(--border)]" onclick="setHabit('${h.id}','missed')">❌ فاتني</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  updateHabitProgress();
+  renderStreakGrid();
+}
+
+function setHabit(id, state) {
+  habitState[id] = habitState[id] === state ? 'none' : state;
+  renderHabits();
+  updateDayProgress();
+}
+
+function updateHabitProgress() {
+  const done = habits.filter(h => habitState[h.id] === 'done').length;
+  const pct = Math.round(done / habits.length * 100);
+  document.getElementById('habits-percent').textContent = `${pct}%`;
+  document.getElementById('habits-progress').style.width = `${pct}%`;
+  document.getElementById('stat-tasks').textContent = `${pct}%`;
+}
+
+function renderStreakGrid() {
+  const grid = document.getElementById('streak-grid');
+  const days = ['أح','إث','ث','أر','خ','ج','س'];
+  const today = new Date().getDay();
+  grid.innerHTML = days.map((d, i) => {
+    const isPast = i < today;
+    const isToday = i === today;
+    return `<div class="flex flex-col items-center gap-1">
+      <div class="text-xs text-[var(--muted-foreground)]">${d}</div>
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm
+        ${isToday ? 'bg-[var(--primary)] text-[var(--primary-foreground)] font-bold' :
+          isPast ? 'bg-[#10b981] text-white' : 'bg-[var(--border)]'}">
+        ${isToday ? '📍' : isPast ? '✓' : '·'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateDayProgress() {
+  updateHabitProgress();
+  const done = habits.filter(h => habitState[h.id] === 'done').length;
+  const pct = Math.round(done / habits.length * 100);
+  document.getElementById('stat-tasks').textContent = `${pct}%`;
+  document.getElementById('stat-study').textContent = String(pomodoroSessionCount);
+
+  // gym check
+  const gymDone = habitState['gym'] === 'done';
+  document.getElementById('stat-gym').textContent = gymDone ? '✅' : '—';
+
+  // sleep check
+  const sleepDone = habitState['sleep'] === 'done';
+  document.getElementById('stat-sleep').textContent = sleepDone ? '7س+' : '—';
+}
+
+// ========== INIT ==========
+renderSchedule();
+updateClock();
+setInterval(updateClock, 1000);
+setInterval(() => { if (currentTab === 'schedule') updateActiveBlock(new Date()); }, 30000);
+</script>
+</body>
+</html>
