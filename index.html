@@ -7,156 +7,158 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
-      --bg:  #07101f;
-      --s1:  #0d1b2e;
-      --s2:  #132236;
-      --s3:  #1a2d44;
-      --bd:  #1e3050;
-      --bd2: #27405f;
-      --tx:  #e2e8f0;
-      --mu:  #64748b;
-      --mu2: #94a3b8;
-      --ac:  #3b82f6;
-      --ac2: #60a5fa;
-      --glo: rgba(59,130,246,.15);
+      --bg:   #f8fafc;
+      --s1:   #ffffff;
+      --s2:   #f1f5f9;
+      --s3:   #e2e8f0;
+      --bd:   #e2e8f0;
+      --bd2:  #cbd5e1;
+      --tx:   #0f172a;
+      --mu:   #64748b;
+      --mu2:  #334155;
+      --ac:   #2563eb;
+      --ac2:  #3b82f6;
+      --sh:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --sh-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
     }
+    .dark-mode {
+      --bg:   #07101f;
+      --s1:   #0d1b2e;
+      --s2:   #132236;
+      --s3:   #1a2d44;
+      --bd:   #1e3050;
+      --bd2:  #27405f;
+      --tx:   #e2e8f0;
+      --mu:   #64748b;
+      --mu2:  #94a3b8;
+      --ac:   #3b82f6;
+      --ac2:  #60a5fa;
+      --sh:   0 1px 3px rgba(0,0,0,0.4);
+      --sh-lg: 0 10px 25px -3px rgba(0,0,0,0.5);
+    }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;position:relative;overflow-x:hidden}
-    body::before{content:'';position:fixed;top:-30%;right:-10%;width:50%;height:60%;background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
-    body::after{content:'';position:fixed;bottom:-20%;left:-10%;width:40%;height:50%;background:radial-gradient(circle,rgba(99,102,241,.04) 0%,transparent 70%);pointer-events:none;z-index:0}
-    .wrap{position:relative;z-index:1}
-    ::-webkit-scrollbar{width:4px;height:4px}
-    ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+    body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh;transition:background .2s,color .2s}
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
 
-    /* ── typography ── */
-    .grad{background:linear-gradient(135deg,#60a5fa 0%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .grad2{background:linear-gradient(135deg,#34d399 0%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    /* ── typography & utility ── */
+    .grad{background:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .sechd{font-size:11px;font-weight:800;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
 
-    /* ── glass card ── */
-    .glass{background:var(--s1);border:1px solid var(--bd);border-radius:16px}
-    .glass2{background:var(--s2);border:1px solid var(--bd);border-radius:12px}
+    /* ── card base ── */
+    .card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh)}
+    .card-sm{background:var(--s2);border:1px solid var(--bd);border-radius:12px}
 
     /* ── tabs ── */
-    .tab-row{display:flex;gap:4px;overflow-x:auto;padding:4px;background:var(--s1);border:1px solid var(--bd);border-radius:14px}
+    .tab-row{display:flex;gap:4px;overflow-x:auto;padding:5px;background:var(--s1);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh)}
     .tab-row::-webkit-scrollbar{height:0}
-    .tab-btn{flex:none;padding:7px 15px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--mu);transition:all .2s;white-space:nowrap}
-    .tab-btn.on{background:var(--ac);color:#fff;box-shadow:0 2px 14px rgba(59,130,246,.35)}
+    .tab-btn{flex:none;padding:7px 15px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--mu);transition:all .2s;white-space:nowrap}
+    .tab-btn.on{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.25)}
 
     /* ── schedule blocks ── */
-    .sbl{border-right:3px solid;border-radius:12px;background:var(--s2);padding:10px 13px;transition:all .2s;position:relative;overflow:hidden}
-    .sbl::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,currentColor 0%,transparent 100%)}
-    .sbl:hover{background:var(--s3);transform:translateX(-2px)}
-    .sbl.now{box-shadow:0 0 0 1px var(--ac),0 4px 24px var(--glo);transform:translateX(-3px)}
-    .sbl.past{opacity:.35}
+    .sbl{border-right:4px solid;border-radius:12px;background:var(--s1);border:1px solid var(--bd);border-right-width:4px;padding:11px 14px;transition:all .2s;box-shadow:var(--sh)}
+    .sbl:hover{background:var(--s2);transform:translateX(-2px)}
+    .sbl.now{box-shadow:0 0 0 2px var(--ac),var(--sh-lg);transform:translateX(-3px);background:var(--s2)}
+    .sbl.past{opacity:.4}
 
     /* ── buttons ── */
-    .btn-p{padding:9px 20px;background:var(--ac);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(59,130,246,.3)}
-    .btn-p:hover{background:#2563eb;transform:translateY(-1px);box-shadow:0 4px 20px rgba(59,130,246,.45)}
-    .btn-g{padding:9px 16px;background:var(--s2);color:var(--mu2);border:1px solid var(--bd);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-    .btn-g:hover{background:var(--s3);color:var(--tx);border-color:var(--bd2)}
+    .btn-p{padding:9px 18px;background:var(--ac);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(37,99,235,.2)}
+    .btn-p:hover{opacity:.92;transform:translateY(-1px)}
+    .btn-g{padding:9px 16px;background:var(--s1);color:var(--mu2);border:1px solid var(--bd);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+    .btn-g:hover{background:var(--s2);color:var(--tx);border-color:var(--bd2)}
 
     /* ── inputs ── */
-    .inp{width:100%;padding:9px 14px;border-radius:10px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);font-size:13px;outline:none;transition:all .2s;font-family:inherit}
-    .inp:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--glo)}
-    .inp::placeholder{color:var(--mu)}
+    .inp{width:100%;padding:10px 14px;border-radius:10px;background:var(--s1);border:1px solid var(--bd);color:var(--tx);font-size:13px;outline:none;transition:all .2s;font-family:inherit}
+    .inp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
 
-    /* ── status badges ── */
-    .sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.03em}
-    .sb-active {background:rgba(16,185,129,.15);color:#10b981}
-    .sb-planned{background:rgba(59,130,246,.15);color:#60a5fa}
-    .sb-waiting{background:rgba(245,158,11,.15);color:#f59e0b}
+    /* ── badges ── */
+    .sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+    .sb-active {background:rgba(16,185,129,.12);color:#059669}
+    .sb-planned{background:rgba(37,99,235,.12);color:#2563eb}
+    .sb-waiting{background:rgba(217,119,6,.12);color:#d97706}
     .sb-paused {background:rgba(100,116,139,.12);color:#64748b}
 
-    /* ── priority items ── */
-    .pitem{border-right:3px solid;border-radius:10px;background:var(--s2);padding:10px 13px;transition:background .2s}
-    .pitem:hover{background:var(--s3)}
-
     /* ── alerts ── */
-    .alert{padding:10px 14px;border-radius:10px;border:1px solid}
-    .alert.crit{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.22)}
-    .alert.high{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.22)}
-    .alert.now {background:rgba(99,102,241,.07);border-color:rgba(99,102,241,.22)}
+    .alert{padding:11px 15px;border-radius:12px;border:1px solid;font-size:13px}
+    .alert.crit{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#b91c1c}
+    .alert.high{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:#b45309}
+    .alert.now {background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.25);color:#4338ca}
 
     /* ── progress bar ── */
-    .pbar{height:4px;border-radius:2px;background:var(--bd);overflow:hidden}
-    .pfill{height:100%;border-radius:2px;transition:width .5s ease}
+    .pbar{height:5px;border-radius:3px;background:var(--s3);overflow:hidden}
+    .pfill{height:100%;border-radius:3px;transition:width .4s ease}
 
     /* ── project cards ── */
-    .pcard{border-radius:16px;background:var(--s1);border:1px solid var(--bd);border-top:3px solid;padding:16px;cursor:pointer;transition:all .25s}
-    .pcard:hover{background:var(--s2);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+    .pcard{border-radius:16px;background:var(--s1);border:1px solid var(--bd);border-top:4px solid;padding:16px;cursor:pointer;transition:all .2s;box-shadow:var(--sh)}
+    .pcard:hover{transform:translateY(-2px);box-shadow:var(--sh-lg);border-color:var(--bd2)}
 
     /* ── habit buttons ── */
-    .hbtn{flex:1;padding:5px 4px;border-radius:7px;font-size:11px;font-weight:700;border:1px solid var(--bd);background:var(--s2);color:var(--mu);cursor:pointer;transition:all .15s}
-    .hbtn.hd{background:rgba(16,185,129,.18);border-color:#10b981;color:#10b981}
-    .hbtn.hm{background:rgba(239,68,68,.15);border-color:#ef4444;color:#ef4444}
+    .hbtn{flex:1;padding:6px 4px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid var(--bd);background:var(--s2);color:var(--mu);cursor:pointer;transition:all .15s}
+    .hbtn.hd{background:#059669;border-color:#059669;color:#fff}
+    .hbtn.hm{background:#ef4444;border-color:#ef4444;color:#fff;opacity:.8}
 
     /* ── subject card ── */
-    .scard{border-right:3px solid;border-radius:12px;background:var(--s2);padding:12px 14px;cursor:pointer;transition:all .2s}
-    .scard:hover{background:var(--s3);transform:translateX(-2px)}
-    .scard.done{opacity:.55}
+    .scard{border-right:4px solid;border-radius:12px;background:var(--s1);border:1px solid var(--bd);border-right-width:4px;padding:12px 14px;cursor:pointer;transition:all .2s;box-shadow:var(--sh)}
+    .scard:hover{background:var(--s2);transform:translateX(-2px)}
+    .scard.done{opacity:.5}
 
     /* ── work session ── */
-    .ws{flex:1;padding:8px 6px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid var(--bd);background:var(--s2);color:var(--mu);cursor:pointer;transition:all .15s}
-    .ws.ws2{background:rgba(16,185,129,.18);border-color:#10b981;color:#10b981}
-    .ws.ws1{background:rgba(245,158,11,.18);border-color:#f59e0b;color:#f59e0b}
+    .ws{flex:1;padding:9px 6px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid var(--bd);background:var(--s1);color:var(--mu);cursor:pointer;transition:all .15s}
+    .ws.ws2{background:rgba(16,185,129,.15);border-color:#059669;color:#059669}
+    .ws.ws1{background:rgba(217,119,6,.15);border-color:#d97706;color:#d97706}
     .ws.ws0{background:rgba(100,116,139,.12);border-color:#64748b;color:#64748b}
 
     /* ── seminar toggle ── */
     .tog{display:flex;background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:3px}
-    .topt{flex:1;padding:4px 10px;border-radius:15px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;color:var(--mu);transition:all .15s}
+    .topt{flex:1;padding:5px 12px;border-radius:15px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;color:var(--mu);transition:all .15s}
     .topt.on{background:var(--ac);color:white}
 
     /* ── pomo ring ── */
     .pring{transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset 1s linear}
 
-    /* ── inbox ── */
-    .ibx{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
-
-    /* ── day banner ── */
-    .dbanner{padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;line-height:1.6}
-
     /* ── stat card ── */
-    .stcard{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center;transition:border-color .2s}
-    .stcard:hover{border-color:var(--bd2)}
+    .stcard{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--sh)}
 
-    /* ── hero ── */
-    .hero{background:linear-gradient(135deg,rgba(59,130,246,.08) 0%,rgba(99,102,241,.05) 100%);border:1px solid rgba(59,130,246,.14);border-radius:20px}
+    /* ── hero banner ── */
+    .hero{background:linear-gradient(135deg,rgba(37,99,235,.07) 0%,rgba(124,58,237,.05) 100%);border:1px solid rgba(37,99,235,.15);border-radius:20px;box-shadow:var(--sh)}
 
     /* ── focus overlay ── */
-    #fov{position:fixed;inset:0;background:rgba(7,16,31,.97);z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(12px)}
+    #fov{position:fixed;inset:0;background:rgba(15,23,42,.96);z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;color:#fff}
     #fov.on{display:flex}
 
-    /* ── assign item ── */
-    .asgn{border-right:3px solid;border-radius:12px;background:var(--s2);border:1px solid var(--bd);padding:12px 14px}
-
-    /* ── sub-tab btn ── */
-    .atab{flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--bd);background:transparent;color:var(--mu);transition:all .15s;font-family:inherit}
-    .atab.on{border-color:var(--ac);color:var(--ac);background:rgba(59,130,246,.06)}
-
-    /* ── animations ── */
-    @keyframes si{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .si{animation:si .28s ease forwards}
-    @keyframes glow{0%,100%{box-shadow:0 0 16px rgba(59,130,246,.2)}50%{box-shadow:0 0 28px rgba(59,130,246,.4)}}
-    .now{animation:glow 2.5s infinite}
+    /* ── priority item ── */
+    .pitem{border-right:3px solid;border-radius:10px;background:var(--s1);border:1px solid var(--bd);border-right-width:3px;padding:11px 14px;box-shadow:var(--sh);transition:background .2s}
+    .pitem:hover{background:var(--s2)}
 
     /* ── toast ── */
-    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--s3);color:var(--tx);border:1px solid var(--bd2);padding:10px 22px;border-radius:22px;font-size:13px;font-weight:700;display:none;z-index:999;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:700;display:none;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 
-    /* ── 2-col on desktop ── */
-    @media(min-width:700px){.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}.threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.fourcol{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}}
+    /* ── sub-tab button ── */
+    .atab{flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--bd);background:var(--s1);color:var(--mu);transition:all .15s}
+    .atab.on{border-color:var(--ac);color:var(--ac);background:rgba(37,99,235,.06)}
+
+    /* ── animations ── */
+    @keyframes si{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .si{animation:si .2s ease forwards}
+
+    @media(min-width:700px){
+      .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+      .threecol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+      .fourcol{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+    }
   </style>
 </head>
 <body>
-<div class="wrap max-w-3xl mx-auto p-3 pb-10">
+<div class="max-w-3xl mx-auto p-3 pb-12">
 
-  <!-- ═══ HERO ═══ -->
+  <!-- ═══ HEADER / HERO ═══ -->
   <div class="hero p-4 mb-4">
     <div class="flex items-start justify-between">
       <div>
-        <div style="font-size:12px;font-weight:600;color:var(--mu2);margin-bottom:4px" id="greeting">مرحبا, Felo</div>
-        <h1 class="grad" style="font-size:26px;font-weight:800;margin-bottom:2px;letter-spacing:-.5px">Felo OS</h1>
+        <div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:3px" id="greeting">صباح الخير, Felo ☀️</div>
+        <h1 class="grad" style="font-size:26px;font-weight:800;letter-spacing:-.5px">Felo OS 🚀</h1>
         <div style="font-size:12px;color:var(--mu)" id="date-disp"></div>
       </div>
       <div style="text-align:left">
@@ -167,16 +169,16 @@
   </div>
 
   <!-- ═══ DAY BANNER ═══ -->
-  <div id="day-banner" class="dbanner mb-3"></div>
+  <div id="day-banner" class="card p-3 mb-3 text-sm font-bold"></div>
 
   <!-- ═══ ALERTS ═══ -->
   <div id="alerts" class="space-y-2 mb-3"></div>
 
   <!-- ═══ STATS ═══ -->
   <div class="fourcol grid grid-cols-4 gap-2 mb-4">
-    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#8b5cf6;margin-bottom:2px" id="st-sleep">—</div><div style="font-size:11px;color:var(--mu)">نوم</div></div>
-    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#10b981;margin-bottom:2px" id="st-pomo">0</div><div style="font-size:11px;color:var(--mu)">جلسات</div></div>
-    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#ef4444;margin-bottom:2px" id="st-gym">—</div><div style="font-size:11px;color:var(--mu)">جيم</div></div>
+    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#7c3aed;margin-bottom:2px" id="st-sleep">—</div><div style="font-size:11px;color:var(--mu)">نوم كافي</div></div>
+    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#059669;margin-bottom:2px" id="st-pomo">0</div><div style="font-size:11px;color:var(--mu)">جلسات تركيز</div></div>
+    <div class="stcard"><div style="font-size:20px;font-weight:800;color:#ef4444;margin-bottom:2px" id="st-gym">—</div><div style="font-size:11px;color:var(--mu)">رياضة</div></div>
     <div class="stcard"><div style="font-size:20px;font-weight:800;color:var(--ac);margin-bottom:2px" id="st-asgn">0</div><div style="font-size:11px;color:var(--mu)">تسليمات</div></div>
   </div>
 
@@ -191,35 +193,35 @@
     <button class="tab-btn" onclick="sw('habits')">✅ عادات</button>
   </div>
 
-  <!-- ═══ TODAY ═══ -->
+  <!-- ═══ TAB: TODAY ═══ -->
   <div id="tab-today" class="si">
     <div class="twocol">
       <div>
         <div class="sechd" style="display:flex;justify-content:space-between;align-items:center">
           <span>📅 Timeline اليوم</span>
-          <button onclick="sw('agenda')" style="font-size:12px;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:700">+ حدث</button>
+          <button onclick="sw('agenda')" style="font-size:12px;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:700">+ أضف حدث</button>
         </div>
-        <div class="space-y-1" id="sched-list"></div>
+        <div class="space-y-2" id="sched-list"></div>
       </div>
       <div>
-        <div class="sechd">🎯 Priority Queue</div>
+        <div class="sechd">🎯 Priority Queue (أولويات اليوم)</div>
         <div class="space-y-2" id="pqueue"></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ AGENDA ═══ -->
+  <!-- ═══ TAB: AGENDA ═══ -->
   <div id="tab-agenda" class="hidden si">
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button class="atab on" id="ab-asgn" onclick="swA('asgn')">📋 تسليمات</button>
-      <button class="atab" id="ab-evts" onclick="swA('evts')">📅 أحداث</button>
+      <button class="atab on" id="ab-asgn" onclick="swA('asgn')">📋 تسليمات وأسايمنتس</button>
+      <button class="atab" id="ab-evts" onclick="swA('evts')">📅 أحداث وقداسات</button>
     </div>
     <!-- ASSIGNMENTS -->
     <div id="ap-asgn">
-      <div class="glass p-4 mb-3">
-        <div class="sechd">➕ أضف تسليم / أسايمنت</div>
+      <div class="card p-4 mb-3">
+        <div class="sechd">➕ أضف تسليم / ديدلاين جديد</div>
         <div class="space-y-2">
-          <input id="a-title" class="inp" type="text" placeholder="اسم التسليم..." onkeydown="if(event.key==='Enter')addAssign()"/>
+          <input id="a-title" class="inp" type="text" placeholder="اسم التسليم أو الواجب..." onkeydown="if(event.key==='Enter')addAssign()"/>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             <select id="a-proj" class="inp">
               <option value="">المشروع...</option>
@@ -237,19 +239,24 @@
     </div>
     <!-- EVENTS -->
     <div id="ap-evts" class="hidden">
-      <div class="glass p-4 mb-3">
-        <div class="sechd">➕ أضف حدث للجدول</div>
+      <div class="card p-4 mb-3">
+        <div class="sechd">➕ أضف حدث للجدول (قداس، كنيسة، سفر، بادل...)</div>
         <div class="space-y-2">
-          <input id="e-name" class="inp" type="text" placeholder="اسم الحدث (قداس، بادل، سفر...)"/>
+          <input id="e-name" class="inp" type="text" placeholder="اسم الحدث (قداس الأحد، اجتماع كنيسة، بادل...)"/>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             <select id="e-type" class="inp">
-              <option value="church">⛪ قداس / كنيسة</option><option value="gym">🏋️ جيم</option>
-              <option value="swim">🏊 سباحة</option><option value="padel">🎾 بادل</option>
-              <option value="travel">✈️ سفر / رحلة</option><option value="meeting">🤝 اجتماع</option>
-              <option value="work">💼 شغل / مقابلة</option><option value="other">📌 أخرى</option>
+              <option value="church">⛪ قداس / كنيسة / اجتماع</option>
+              <option value="gym">🏋️ جيم</option>
+              <option value="swim">🏊 سباحة</option>
+              <option value="padel">🎾 بادل</option>
+              <option value="travel">✈️ سفر / رحلة</option>
+              <option value="meeting">🤝 اجتماع مشروع</option>
+              <option value="work">💼 شغل</option>
+              <option value="other">📌 أخرى</option>
             </select>
             <select id="e-rec" class="inp" onchange="togRecUI()">
-              <option value="once">مرة واحدة</option><option value="weekly">أسبوعياً</option>
+              <option value="once">مرة واحدة (تاريخ محدد)</option>
+              <option value="weekly">أسبوعياً (يوم ثابت)</option>
             </select>
           </div>
           <div id="e-once-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
@@ -269,33 +276,33 @@
     </div>
   </div>
 
-  <!-- ═══ PROJECTS ═══ -->
+  <!-- ═══ TAB: PROJECTS ═══ -->
   <div id="tab-projects" class="hidden si">
-    <div class="sechd">🗂️ مشاريعك ومجالاتك</div>
+    <div class="sechd">🗂️ المجالات والمشاريع الأساسية</div>
     <div id="proj-grid" class="threecol grid grid-cols-2 gap-3 mb-4"></div>
     <div id="proj-detail" class="hidden">
-      <div class="glass p-4">
+      <div class="card p-4">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
           <div style="display:flex;align-items:center;gap:10px" id="pd-hdr"></div>
           <button onclick="closeProj()" class="btn-g" style="padding:4px 12px;font-size:12px">✕ إغلاق</button>
         </div>
         <div id="pd-stats" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px"></div>
-        <div class="sechd">المهام</div>
+        <div class="sechd">قائمة المهام</div>
         <div id="pd-tasks" class="space-y-1 mb-3"></div>
         <div style="display:flex;gap:8px">
-          <input id="pd-nt" class="inp" type="text" placeholder="أضف مهمة للمشروع..." onkeydown="if(event.key==='Enter')addPT()"/>
+          <input id="pd-nt" class="inp" type="text" placeholder="أضف مهمة جديدة للمشروع..." onkeydown="if(event.key==='Enter')addPT()"/>
           <button onclick="addPT()" class="btn-p" style="white-space:nowrap">أضف</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ FOCUS ═══ -->
+  <!-- ═══ TAB: FOCUS ═══ -->
   <div id="tab-focus" class="hidden si">
-    <div class="glass p-5" style="text-align:center">
-      <div class="sechd" style="text-align:center">⏱️ Focus Mode</div>
+    <div class="card p-5" style="text-align:center">
+      <div class="sechd" style="text-align:center">⏱️ وضع التركيز (Focus Mode)</div>
       <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
-        <button id="pm-work"  onclick="setPM('work')"  class="btn-g" style="font-size:12px;border-color:var(--ac);color:var(--ac)">📚 عمق 25د</button>
+        <button id="pm-work"  onclick="setPM('work')"  class="btn-g" style="font-size:12px;border-color:var(--ac);color:var(--ac);background:rgba(37,99,235,.08)">📚 تركيز 25د</button>
         <button id="pm-short" onclick="setPM('short')" class="btn-g" style="font-size:12px">☕ راحة 5د</button>
         <button id="pm-long"  onclick="setPM('long')"  class="btn-g" style="font-size:12px">🛋️ راحة 15د</button>
       </div>
@@ -307,63 +314,57 @@
           <option value="mios">⚙️ MIOS</option><option value="ros2">🤖 ROS 2</option>
           <option value="career">💼 Career</option><option value="life">🏋️ Personal</option>
         </select>
-        <input id="p-task" class="inp" type="text" placeholder="المهمة الحالية..."/>
+        <input id="p-task" class="inp" type="text" placeholder="اسم المهمة اللي شغال عليها..."/>
       </div>
       <div style="position:relative;display:inline-block;margin-bottom:16px">
-        <svg width="190" height="190" style="filter:drop-shadow(0 0 24px rgba(59,130,246,.25))">
-          <circle cx="95" cy="95" r="84" fill="none" stroke="rgba(59,130,246,.12)" stroke-width="8"/>
-          <circle id="p-ring" cx="95" cy="95" r="84" fill="none" stroke="url(#gr1)" stroke-width="8"
+        <svg width="190" height="190">
+          <circle cx="95" cy="95" r="84" fill="none" stroke="var(--s3)" stroke-width="8"/>
+          <circle id="p-ring" cx="95" cy="95" r="84" fill="none" stroke="var(--ac)" stroke-width="8"
             stroke-linecap="round" stroke-dasharray="527.79" stroke-dashoffset="0" class="pring"/>
-          <defs>
-            <linearGradient id="gr1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#3b82f6"/>
-              <stop offset="100%" style="stop-color:#8b5cf6"/>
-            </linearGradient>
-          </defs>
         </svg>
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-          <div style="font-size:38px;font-weight:800;font-variant-numeric:tabular-nums" id="p-disp">25:00</div>
+          <div style="font-size:38px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--tx)" id="p-disp">25:00</div>
           <div style="font-size:12px;color:var(--mu);margin-top:2px" id="p-lbl">Deep Work</div>
-          <div style="font-size:11px;color:var(--mu)">#<span id="p-cnt">1</span></div>
+          <div style="font-size:11px;color:var(--mu)">جلسة #<span id="p-cnt">1</span></div>
         </div>
       </div>
-      <div style="display:flex;gap:10px;justify-content:center;margin-bottom:14px">
+      <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px">
         <button onclick="pStart()" id="p-sbtn" class="btn-p" style="padding:10px 26px">▶ ابدأ</button>
         <button onclick="pPause()" class="btn-g" style="padding:10px 18px">⏸</button>
         <button onclick="pReset()" class="btn-g" style="padding:10px 18px">↺</button>
-        <button onclick="openFov()" class="btn-g" style="padding:10px 14px" title="وضع التركيز الكامل">⛶</button>
+        <button onclick="openFov()" class="btn-g" style="padding:10px 14px" title="شاشة كاملة">⛶</button>
       </div>
-      <div class="glass2 p-3" style="margin-bottom:14px">
-        <input id="p-distr" class="inp" type="text" placeholder="💭 فكرة جانبية؟ سجّلها هنا وارجع للتركيز..." onkeydown="if(event.key==='Enter')capDistr()"/>
+      <div class="card-sm p-3" style="margin-bottom:14px">
+        <input id="p-distr" class="inp" type="text" placeholder="💭 فكرة جانبية خطرت في بالك؟ اكتبها هنا ودوس Enter عشان تسجلها ومتسيبش شغلك..." onkeydown="if(event.key==='Enter')capDistr()"/>
       </div>
       <div style="text-align:right">
-        <div class="sechd">سجل اليوم</div>
-        <div id="p-log" style="max-height:130px;overflow-y:auto;font-size:12px;color:var(--mu)" class="space-y-1"><p style="text-align:center;padding:8px">لا يوجد بعد 🎯</p></div>
+        <div class="sechd">سجل جلسات اليوم</div>
+        <div id="p-log" style="max-height:120px;overflow-y:auto;font-size:12px;color:var(--mu)" class="space-y-1"><p style="text-align:center;padding:8px">لا يوجد بعد 🎯</p></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ INBOX ═══ -->
+  <!-- ═══ TAB: INBOX ═══ -->
   <div id="tab-inbox" class="hidden si">
-    <div class="glass p-4 mb-4">
-      <div class="sechd">📥 Quick Capture — سجّل أي حاجة دلوقتي</div>
+    <div class="card p-4 mb-4">
+      <div class="sechd">📥 Quick Capture (صندوق الوارد السريع)</div>
       <div style="display:flex;gap:8px">
-        <input id="ib-inp" class="inp" type="text" placeholder="موعد، مهمة، فكرة، وعد — أي حاجة..." onkeydown="if(event.key==='Enter')addIB()"/>
+        <input id="ib-inp" class="inp" type="text" placeholder="فكرة، موعد، مهمة، وعد لشخص..." onkeydown="if(event.key==='Enter')addIB()"/>
         <button onclick="addIB()" class="btn-p" style="white-space:nowrap">سجّل ⚡</button>
       </div>
-      <div style="font-size:11px;margin-top:8px;color:var(--mu)">💡 مش لازم تنظم دلوقتي — بس سجّل عشان ما تنساش</div>
+      <div style="font-size:11px;margin-top:8px;color:var(--mu)">💡 سجل هنا من غير ما تشغل بالك بالتصنيف دلوقتي عشان ما تنساش.</div>
     </div>
     <div style="margin-bottom:16px">
       <div class="sechd" style="display:flex;justify-content:space-between">
-        <span>🗂️ Inbox — غير منظم</span>
+        <span>🗂️ غير مصنف (Inbox)</span>
         <span id="ib-cnt" style="color:var(--mu);font-size:12px"></span>
       </div>
       <div id="ib-list" class="space-y-2"></div>
     </div>
-    <div class="glass p-4">
-      <div class="sechd">⏳ Waiting For — مستني رد / تأكيد</div>
+    <div class="card p-4">
+      <div class="sechd">⏳ Waiting For — مستني رد / متابعة من حد</div>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <input id="wf-who" class="inp" type="text" placeholder="مين؟"/>
+        <input id="wf-who" class="inp" type="text" placeholder="الشخص (سالم، عميل...)"/>
         <input id="wf-what" class="inp" type="text" placeholder="بتستنى إيه منه؟" onkeydown="if(event.key==='Enter')addWF()"/>
         <button onclick="addWF()" class="btn-p" style="padding:9px 14px;white-space:nowrap">+</button>
       </div>
@@ -371,80 +372,74 @@
     </div>
   </div>
 
-  <!-- ═══ STUDY ═══ -->
+  <!-- ═══ TAB: STUDY ═══ -->
   <div id="tab-study" class="hidden si">
-    <div class="glass p-3 mb-3" style="display:flex;align-items:center;justify-content:space-between">
-      <div><div style="font-weight:700;font-size:14px">🎓 Seminar الأسبوع ده</div><div style="font-size:11px;color:var(--mu)">غيّره كل أسبوع</div></div>
+    <div class="card p-3 mb-3" style="display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font-weight:700;font-size:14px">🎓 Seminar الأسبوع ده</div><div style="font-size:11px;color:var(--mu)">غيّره حسب وجوده كل أسبوع</div></div>
       <div class="tog" id="sem-tog">
         <div class="topt on" onclick="setSem(true)">عندي ✅</div>
         <div class="topt" onclick="setSem(false)">مفيش ⬜</div>
       </div>
     </div>
-    <div class="glass p-3 mb-3">
+    <div class="card p-3 mb-3">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span class="sechd" style="margin:0">تقدم الأسبوع</span>
+        <span class="sechd" style="margin:0">تقدم مواد الأسبوع</span>
         <span style="font-weight:800;color:var(--ac)" id="wk-lbl">0/7</span>
       </div>
-      <div class="pbar"><div class="pfill" style="background:linear-gradient(90deg,var(--ac),#8b5cf6)" id="wk-bar"></div></div>
+      <div class="pbar"><div class="pfill" style="background:var(--ac)" id="wk-bar"></div></div>
     </div>
-    <div class="sechd">✈️ مرة على الأقل كل أسبوع</div>
+    <div class="sechd">✈️ مواد هندسة الطيران — مرة واحدة على الأقل أسبوعياً</div>
     <div id="subj-list" class="space-y-2"></div>
-    <button onclick="resetWeek()" class="btn-g" style="width:100%;margin-top:12px;font-size:12px">🔄 إعادة تعيين الأسبوع</button>
+    <button onclick="resetWeek()" class="btn-g" style="width:100%;margin-top:12px;font-size:12px">🔄 إعادة تعيين الأسبوع الجديد</button>
   </div>
 
-  <!-- ═══ HABITS ═══ -->
+  <!-- ═══ TAB: HABITS ═══ -->
   <div id="tab-habits" class="hidden si">
-    <div class="glass p-3 mb-3">
+    <div class="card p-3 mb-3">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div><div style="font-weight:700;font-size:14px">💼 سيشنز الشغل</div><div style="font-size:11px;color:var(--mu)">4:30 م → 7 م · مرتين</div></div>
-        <div style="font-size:22px" id="ws-ico">⬜</div>
+        <div><div style="font-weight:700;font-size:14px">💼 سيشنز الشغل (4:30 م → 7:00 م)</div><div style="font-size:11px;color:var(--mu)">مرتين يومياً</div></div>
+        <div style="font-size:20px" id="ws-ico">⬜</div>
       </div>
       <div style="display:flex;gap:8px">
         <button class="ws" onclick="setWS(2)">✅ سيشنزين</button>
-        <button class="ws" onclick="setWS(1)">🟡 واحدة</button>
+        <button class="ws" onclick="setWS(1)">🟡 واحدة بس</button>
         <button class="ws" onclick="setWS(0)">⬜ إجازة</button>
       </div>
     </div>
-    <div class="sechd">عادات يومية</div>
+    <div class="sechd">عادات يومية وحياة شخصية</div>
     <div id="hab-grid" class="grid grid-cols-2 gap-2 mb-3"></div>
-    <div class="glass p-3">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:14px;font-weight:600">إنجاز اليوم</span><span style="font-weight:800;color:var(--ac)" id="h-pct">0%</span></div>
-      <div class="pbar"><div class="pfill" style="background:linear-gradient(90deg,#10b981,var(--ac))" id="h-bar"></div></div>
+    <div class="card p-3">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:14px;font-weight:700">إنجاز اليوم</span><span style="font-weight:800;color:var(--ac)" id="h-pct">0%</span></div>
+      <div class="pbar"><div class="pfill" style="background:linear-gradient(90deg,#059669,var(--ac))" id="h-bar"></div></div>
     </div>
     <div id="streak" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px"></div>
   </div>
 
-</div><!-- /wrap -->
+</div>
 
 <!-- ═══ FOCUS OVERLAY ═══ -->
 <div id="fov">
-  <div style="text-align:center;max-width:420px;width:92%;padding:24px">
-    <div style="font-size:11px;color:var(--mu);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">FOCUS MODE — FELO OS</div>
-    <div id="fo-task" style="font-size:20px;font-weight:800;margin-bottom:4px"></div>
-    <div id="fo-proj" style="font-size:13px;color:var(--mu);margin-bottom:24px"></div>
+  <div style="text-align:center;max-width:400px;width:90%;padding:24px">
+    <div style="font-size:11px;color:#94a3b8;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">FOCUS MODE — FELO OS</div>
+    <div id="fo-task" style="font-size:22px;font-weight:800;margin-bottom:4px;color:#fff"></div>
+    <div id="fo-proj" style="font-size:13px;color:#94a3b8;margin-bottom:24px"></div>
     <div style="position:relative;display:inline-block;margin-bottom:24px">
-      <svg width="220" height="220" style="filter:drop-shadow(0 0 40px rgba(59,130,246,.3))">
-        <circle cx="110" cy="110" r="98" fill="none" stroke="rgba(59,130,246,.1)" stroke-width="8"/>
-        <circle id="fo-ring" cx="110" cy="110" r="98" fill="none" stroke="url(#gr2)" stroke-width="8"
+      <svg width="220" height="220">
+        <circle cx="110" cy="110" r="98" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="8"/>
+        <circle id="fo-ring" cx="110" cy="110" r="98" fill="none" stroke="#3b82f6" stroke-width="8"
           stroke-linecap="round" stroke-dasharray="615.75" stroke-dashoffset="0" class="pring"/>
-        <defs>
-          <linearGradient id="gr2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#3b82f6"/>
-            <stop offset="100%" style="stop-color:#8b5cf6"/>
-          </linearGradient>
-        </defs>
       </svg>
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-        <div class="grad" style="font-size:52px;font-weight:800;font-variant-numeric:tabular-nums" id="fo-disp">25:00</div>
-        <div style="font-size:13px;color:var(--mu);margin-top:4px" id="fo-lbl">Deep Work</div>
+        <div style="font-size:52px;font-weight:800;font-variant-numeric:tabular-nums;color:#fff" id="fo-disp">25:00</div>
+        <div style="font-size:13px;color:#94a3b8;margin-top:4px" id="fo-lbl">Deep Work</div>
       </div>
     </div>
     <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px">
       <button onclick="pStart()" id="fo-sbtn" class="btn-p" style="padding:12px 32px;font-size:15px">▶ ابدأ</button>
       <button onclick="pPause()" class="btn-g" style="padding:12px 20px;font-size:15px">⏸</button>
     </div>
-    <input id="fo-distr" class="inp" type="text" placeholder="💭 فكرة جانبية — سجّل وارجع للتركيز..." style="margin-bottom:16px" onkeydown="if(event.key==='Enter')capDistr()"/>
-    <button onclick="closeFov()" class="btn-g" style="width:100%">← خروج من Focus Mode</button>
+    <input id="fo-distr" class="inp" type="text" placeholder="💭 فكرة جانبية — سجّل وارجع للتركيز..." style="margin-bottom:16px;background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)" onkeydown="if(event.key==='Enter')capDistr()"/>
+    <button onclick="closeFov()" class="btn-g" style="width:100%;color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.05)">← خروج من Focus Mode</button>
   </div>
 </div>
 
@@ -452,7 +447,7 @@
 
 <script>
 // ════════════════════════════════════════
-// CONSTANTS
+// CONSTANTS (TAILORED STRICTLY FOR FELO)
 // ════════════════════════════════════════
 const UNI={
   0:{has:true,s:"09:00",e:"16:00",lbl:"الأحد"},
@@ -463,39 +458,44 @@ const UNI={
 };
 
 const PROJ=[
-  {id:'uni',   nm:'University',  em:'🎓',c:'#3b82f6',st:'active', goal:'التخرج بامتياز',               prog:45},
-  {id:'aero',  nm:'Aerospace',   em:'🚀',c:'#6366f1',st:'active', goal:'UAV + Skywalker V8',            prog:60},
-  {id:'iymc',  nm:'IYMC',        em:'🧠',c:'#8b5cf6',st:'active', goal:'سفير دولي + بناء الفريق',      prog:70},
-  {id:'bunya', nm:'BUNYA',       em:'🏗️',c:'#10b981',st:'active', goal:'تطوير الخدمات والعملاء',       prog:30},
-  {id:'mios',  nm:'MIOS',        em:'⚙️',c:'#f59e0b',st:'active', goal:'تطوير النظام + quality gates', prog:20},
-  {id:'ros2',  nm:'ROS 2',       em:'🤖',c:'#ef4444',st:'planned',goal:'إتقان ROS2 والروبوتات',         prog:15},
-  {id:'career',nm:'Career',      em:'💼',c:'#14b8a6',st:'planned',goal:'تدريب + مقابلات + فرص',         prog:10},
-  {id:'life',  nm:'Personal',    em:'🏋️',c:'#ec4899',st:'active', goal:'صحة + نوم + وقت شخصي',         prog:50},
+  {id:'uni',   nm:'University',  em:'🎓',c:'#2563eb',st:'active', goal:'التخرج بامتياز + هندسة طيران',   prog:45},
+  {id:'aero',  nm:'Aerospace',   em:'🚀',c:'#4f46e5',st:'active', goal:'UAV + تقرير Skywalker V8',      prog:60},
+  {id:'iymc',  nm:'IYMC',        em:'🧠',c:'#7c3aed',st:'active', goal:'سفير دولي + قيادة المسابقة',     prog:70},
+  {id:'bunya', nm:'BUNYA',       em:'🏗️',c:'#059669',st:'active', goal:'تطوير الخدمات والـ Demos والعملاء',prog:30},
+  {id:'mios',  nm:'MIOS',        em:'⚙️',c:'#d97706',st:'active', goal:'تطوير النظام و Quality Gates',     prog:20},
+  {id:'ros2',  nm:'ROS 2',       em:'🤖',c:'#dc2626',st:'planned',goal:'إتقان ROS 2 والروبوتات والمحاكاة', prog:15},
+  {id:'career',nm:'Career',      em:'💼',c:'#0891b2',st:'planned',goal:'تدريبات + مقابلات + فرص',         prog:10},
+  {id:'life',  nm:'Personal',    em:'🏋️',c:'#db2777',st:'active', goal:'صحة + رياضة + نوم + حياة روحية', prog:50},
 ];
 
 const ET={
-  church:{em:"⛪",c:"#8b5cf6"},gym:{em:"🏋️",c:"#ef4444"},swim:{em:"🏊",c:"#3b82f6"},
-  padel:{em:"🎾",c:"#f59e0b"},travel:{em:"✈️",c:"#6366f1"},meeting:{em:"🤝",c:"#10b981"},
-  work:{em:"💼",c:"#14b8a6"},other:{em:"📌",c:"#64748b"}
+  church:{em:"⛪",c:"#7c3aed",lbl:"قداس / كنيسة"},
+  gym:   {em:"🏋️",c:"#ef4444",lbl:"جيم"},
+  swim:  {em:"🏊",c:"#0284c7",lbl:"سباحة"},
+  padel: {em:"🎾",c:"#d97706",lbl:"بادل"},
+  travel:{em:"✈️",c:"#4f46e5",lbl:"سفر / رحلة"},
+  meeting:{em:"🤝",c:"#059669",lbl:"اجتماع"},
+  work:  {em:"💼",c:"#2563eb",lbl:"شغل"},
+  other: {em:"📌",c:"#64748b",lbl:"أخرى"}
 };
 
 const SUBJS=[
-  {id:"aero",  nm:"Aerodynamics",       em:"🌬️",c:"#3b82f6"},
-  {id:"struct",nm:"Structures",          em:"🏗️",c:"#8b5cf6"},
-  {id:"intro", nm:"Intro to Aeronautics",em:"✈️",c:"#6366f1"},
-  {id:"sem",   nm:"Seminar",             em:"🎓",c:"#f59e0b",sem:true},
-  {id:"prep",  nm:"Prep for Seminar",   em:"📝",c:"#f59e0b",sem:true},
-  {id:"vib",   nm:"Mechanical Vibration",em:"📳",c:"#ef4444"},
-  {id:"design",nm:"Mechanical Design",  em:"⚙️",c:"#14b8a6"},
+  {id:"aero",  nm:"Aerodynamics",        em:"🌬️",c:"#2563eb"},
+  {id:"struct",nm:"Structures",           em:"🏗️",c:"#4f46e5"},
+  {id:"intro", nm:"Intro to Aeronautics", em:"✈️",c:"#0284c7"},
+  {id:"sem",   nm:"Seminar",              em:"🎓",c:"#d97706",sem:true},
+  {id:"prep",  nm:"Prep for Seminar",    em:"📝",c:"#d97706",sem:true},
+  {id:"vib",   nm:"Mechanical Vibration", em:"📳",c:"#dc2626"},
+  {id:"design",nm:"Mechanical Design",   em:"⚙️",c:"#059669"},
 ];
 
 const HABS=[
-  {id:"sleep",nm:"نمت ≥ 7 ساعات",       em:"😴",c:"#8b5cf6"},
-  {id:"gym",  nm:"جيم / سباحة",         em:"🏋️",c:"#ef4444"},
-  {id:"pray", nm:"الصلوات الخمس",       em:"🕌",c:"#14b8a6"},
-  {id:"water",nm:"≥ 2 لتر ميه",         em:"💧",c:"#3b82f6"},
-  {id:"focus",nm:"DEEP WORK بدون موبايل",em:"📵",c:"#8b5cf6"},
-  {id:"plan", nm:"حضرت اليوم الجاي",    em:"📋",c:"#10b981"},
+  {id:"sleep", nm:"نمت ≥ 7 ساعات كافية",          em:"😴",c:"#7c3aed"},
+  {id:"prayer",nm:"صلاة وقراءة الإنجيل (الأجبية)",em:"✝️",c:"#2563eb"},
+  {id:"gym",   nm:"جيم / سباحة / بادل",            em:"🏋️",c:"#ef4444"},
+  {id:"water", nm:"شربت ≥ 2 لتر ميه",             em:"💧",c:"#0284c7"},
+  {id:"focus", nm:"DEEP WORK بدون تشتيت",          em:"📵",c:"#4f46e5"},
+  {id:"plan",  nm:"حضرت أولويات الغد",            em:"📋",c:"#059669"},
 ];
 
 const DAY_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
@@ -503,7 +503,7 @@ const DAY_SH=['أح','إث','ث','أر','خ','ج','س'];
 const MON_AR=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
 // ════════════════════════════════════════
-// STATE
+// STATE & STORAGE
 // ════════════════════════════════════════
 const TODAY=new Date().toISOString().slice(0,10);
 function wkK(){const d=new Date(),dy=d.getDay(),df=d.getDate()-dy+(dy===0?-6:1);const m=new Date(d.setDate(df));return m.toISOString().slice(0,10);}
@@ -546,37 +546,51 @@ function tick(){
   document.getElementById('clock').textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
   document.getElementById('date-disp').textContent=`${DAY_AR[n.getDay()]}، ${n.getDate()} ${MON_AR[n.getMonth()]} ${n.getFullYear()}`;
   const h=n.getHours();
-  document.getElementById('greeting').textContent=(h<12?'صباح النور ☀️':h<17?'النهارده شغلك 💪':h<21?'المساء نور ⚡':'الليل يناديك 🌙')+', Felo';
+  document.getElementById('greeting').textContent=(h<12?'صباح الخير ☀️':h<17?'يومك موفق ومثمر ⚡':h<21?'مساء الخير والقوة 💪':'مساء الهدوء والراحة 🌙')+', Felo';
   if(curTab==='today')hlNow(n);
 }
 function hlNow(n){
   const cur=n.getHours()*60+n.getMinutes();let found=null;
-  document.querySelectorAll('.sbl').forEach(el=>{const s=+el.dataset.s,e=+el.dataset.e;el.classList.toggle('now',cur>=s&&cur<e);el.classList.toggle('past',cur>=e&&!(cur>=s));if(cur>=s&&cur<e)found=el.dataset.lbl;});
+  document.querySelectorAll('.sbl').forEach(el=>{
+    const s=+el.dataset.s,e=+el.dataset.e;
+    const isNow=cur>=s&&cur<e;
+    el.classList.toggle('now',isNow);
+    el.classList.toggle('past',cur>=e&&!isNow);
+    if(isNow)found=el.dataset.lbl;
+  });
   document.getElementById('now-lbl').textContent=found||'—';
 }
 
 // ════════════════════════════════════════
-// SCHEDULE GENERATOR
+// SCHEDULE GENERATOR (CHRISTIAN SCHEDULE)
 // ════════════════════════════════════════
-const SUGG=['📚 مذاكرة / DEEP WORK','💼 شغل + مشاريع','📄 بحث / Coursera','🌍 IYMC / مسابقة','💻 فري لانسر / شركة'];
+const SUGG=['📚 مذاكرة هندسة طيران / DEEP WORK','💼 مشاريع BUNYA و MIOS','📄 بحث علمي / تقرير الـ UAV','🌍 IYMC ومتابعة الفريق','💻 برمجة وروبوتات ROS 2'];
 function evsForD(ds,dow){return events.filter(e=>(e.rec==='weekly'&&+e.wday===dow)||(e.rec==='once'&&e.date===ds));}
+
 function genSched(ds){
   ds=ds||TODAY;const dow=new Date(ds+'T12:00:00').getDay();
   const B=[
-    {t:"00:00",e:"07:00",lbl:"😴 نوم",type:"sleep",c:"#8b5cf6",fixed:true},
-    {t:"07:00",e:"07:30",lbl:"🌅 صحيان + فجر + ميه",type:"morning",c:"#f59e0b",fixed:true},
-    {t:"07:30",e:"08:00",lbl:"🍳 فطار",type:"morning",c:"#f59e0b",fixed:true},
-    {t:"12:30",e:"13:00",lbl:"🕌 ظهر + غدا",type:"prayer",c:"#14b8a6",fixed:true},
-    {t:"15:30",e:"16:00",lbl:"🕌 عصر",type:"prayer",c:"#14b8a6",fixed:true},
-    {t:"19:30",e:"20:00",lbl:"🕌 مغرب",type:"prayer",c:"#14b8a6",fixed:true},
-    {t:"21:30",e:"22:00",lbl:"🕌 عشاء + استحمام",type:"prayer",c:"#14b8a6",fixed:true},
-    {t:"22:00",e:"22:45",lbl:"📖 مراجعة + حضّر بكرا",type:"study",c:"#10b981",fixed:true},
-    {t:"23:00",e:"24:00",lbl:"😴 نوم 🔒 SACRED",type:"sleep",c:"#6366f1",fixed:true,sacred:true},
+    {t:"00:00",e:"07:00",lbl:"😴 نوم هادئ وكافي",type:"sleep",c:"#7c3aed",fixed:true},
+    {t:"07:00",e:"07:45",lbl:"🌅 صحيان + صلاة باكر وقراءة الإنجيل ✝️ + شرب ميه",type:"prayer",c:"#2563eb",fixed:true},
+    {t:"07:45",e:"08:15",lbl:"🍳 فطار وتجهيز اليوم",type:"morning",c:"#d97706",fixed:true},
+    {t:"13:00",e:"14:00",lbl:"🍽️ راحة وغداء خفيف",type:"break",c:"#059669",fixed:true},
+    {t:"19:00",e:"19:30",lbl:"☕ راحة قهوة / وقت عائلي",type:"break",c:"#0284c7",fixed:true},
+    {t:"21:00",e:"21:45",lbl:"🍽️ عشاء خفيف واستحمام",type:"personal",c:"#059669",fixed:true},
+    {t:"21:45",e:"22:45",lbl:"📖 مراجعة هندسة + تحضير الغد",type:"study",c:"#4f46e5",fixed:true},
+    {t:"22:45",e:"23:15",lbl:"✝️ صلاة النوم وقراءة روحية وهدوء",type:"prayer",c:"#7c3aed",fixed:true},
+    {t:"23:15",e:"24:00",lbl:"😴 نوم عميق 🔒 SACRED",type:"sleep",c:"#7c3aed",fixed:true,sacred:true},
   ];
-  if(UNI[dow]?.has)B.push({t:UNI[dow].s,e:UNI[dow].e,lbl:`🏫 جامعة`,type:"uni",c:"#3b82f6",fixed:true,tag:"UNIVERSITY"});
-  evsForD(ds,dow).forEach(ev=>{const ei=ET[ev.type]||ET.other;B.push({t:ev.st,e:ev.en,lbl:`${ei.em} ${ev.name}`,type:ev.type,c:ei.c,uev:true,eid:ev.id});});
+
+  if(UNI[dow]?.has)B.push({t:UNI[dow].s,e:UNI[dow].e,lbl:`🏫 جامعة — محاضرات وسكاشن (${UNI[dow].lbl})`,type:"uni",c:"#2563eb",fixed:true,tag:"UNIVERSITY"});
+
+  evsForD(ds,dow).forEach(ev=>{
+    const ei=ET[ev.type]||ET.other;
+    B.push({t:ev.st,e:ev.en,lbl:`${ei.em} ${ev.name}`,type:ev.type,c:ei.c,uev:true,eid:ev.id});
+  });
+
   return fillG(B).sort((a,b)=>t2m(a.t)-t2m(b.t));
 }
+
 function fillG(B){
   const R=[...B],cov=B.map(b=>({s:t2m(b.t),e:t2m(b.e)||1440})).sort((a,b)=>a.s-b.s);
   const hasG=B.some(b=>['gym','swim','padel'].includes(b.type));
@@ -584,12 +598,21 @@ function fillG(B){
   for(const sl of cov){
     if(sl.s>cur+29&&cur<23*60){
       const gs=cur,ge=Math.min(sl.s,23*60),dur=ge-gs;
-      if(!hasG&&gs>=19*60&&gs<21*60&&dur>=60)R.push({t:m2t(gs),e:m2t(Math.min(gs+90,ge)),lbl:"🏋️ جيم / سباحة — مش قابل للتفاوض",type:"gym",c:"#ef4444",auto:true});
-      else if(dur>=40)R.push({t:m2t(gs),e:m2t(ge),lbl:SUGG[si++%SUGG.length],type:"study",c:"#10b981",auto:true});
+      if(!hasG&&gs>=19*60&&gs<=21*60&&dur>=60) {
+        R.push({t:m2t(gs),e:m2t(Math.min(gs+90,ge)),lbl:"🏋️ جيم / سباحة / بادل — تفريغ ضغوطات",type:"gym",c:"#ef4444",auto:true});
+      } else if(dur>=40){
+        R.push({t:m2t(gs),e:m2t(ge),lbl:SUGG[si++%SUGG.length],type:"study",c:"#2563eb",auto:true});
+      }
     }
     cur=Math.max(cur,sl.e);
   }
-  if(cur<23*60-29){const dur=23*60-cur;if(!hasG&&cur>=19*60&&dur>=60)R.push({t:m2t(cur),e:m2t(Math.min(cur+90,23*60)),lbl:"🏋️ جيم / سباحة",type:"gym",c:"#ef4444",auto:true});else if(dur>=40)R.push({t:m2t(cur),e:m2t(23*60),lbl:SUGG[si++%SUGG.length],type:"study",c:"#10b981",auto:true});}
+  if(cur<23*60-29){
+    const dur=23*60-cur;
+    if(!hasG&&cur>=19*60&&dur>=60)
+      R.push({t:m2t(cur),e:m2t(Math.min(cur+90,23*60)),lbl:"🏋️ جيم / سباحة / بادل",type:"gym",c:"#ef4444",auto:true});
+    else if(dur>=40)
+      R.push({t:m2t(cur),e:m2t(23*60),lbl:SUGG[si++%SUGG.length],type:"study",c:"#2563eb",auto:true});
+  }
   return R;
 }
 
@@ -603,16 +626,18 @@ function renderToday(){
     const s=t2m(b.t),e=t2m(b.e)||1440,dur=e-s;
     const ds=dur>=60?`${Math.floor(dur/60)}س${dur%60?(dur%60)+'د':''}`:dur+'د';
     const div=document.createElement('div');
-    div.className=`sbl ${cur>=s&&cur<e?'now':''} ${cur>=e&&!(cur>=s&&cur<e)?'past':''}`;
-    div.style.borderRightColor=b.c||'#64748b';div.dataset.s=s;div.dataset.e=e;div.dataset.lbl=b.lbl.replace(/^[^ ]+ /,'');
-    const tag=b.sacred?`<span style="font-size:10px;padding:1px 7px;border-radius:10px;background:rgba(99,102,241,.2);color:#a78bfa;font-weight:800">SACRED</span>`:
-              b.tag?`<span style="font-size:10px;padding:1px 7px;border-radius:10px;background:rgba(59,130,246,.15);color:#60a5fa;font-weight:800">${b.tag}</span>`:
-              b.auto?'<span style="font-size:10px;color:var(--mu)">(مقترح)</span>':'';
-    const del=b.uev?`<button onclick="delES('${b.eid}')" style="font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer;padding:0 4px" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button>`:'';
+    const isNow=cur>=s&&cur<e;
+    const isPast=cur>=e&&!isNow;
+    div.className=`sbl ${isNow?'now':''} ${isPast?'past':''}`;
+    div.style.borderRightColor=b.c||'#2563eb';div.dataset.s=s;div.dataset.e=e;div.dataset.lbl=b.lbl.replace(/^[^ ]+ /,'');
+    const tag=b.sacred?`<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(124,58,237,.12);color:#7c3aed;font-weight:800">SACRED</span>`:
+              b.tag?`<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(37,99,235,.12);color:#2563eb;font-weight:800">${b.tag}</span>`:
+              b.auto?'<span style="font-size:10px;color:var(--mu)">(وقت مقترح)</span>':'';
+    const del=b.uev?`<button onclick="delES('${b.eid}')" style="font-size:12px;color:var(--mu);background:none;border:none;cursor:pointer;padding:0 4px" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button>`:'';
     div.innerHTML=`<div style="display:flex;align-items:center;gap:12px">
-      <div style="min-width:50px;text-align:right"><div style="font-size:12px;font-weight:800;color:${b.c}">${b.t}</div><div style="font-size:10px;color:var(--mu)">${ds}</div></div>
-      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.lbl}</div><div style="margin-top:1px">${tag}</div></div>
-      ${del}${cur>=e&&!(cur>=s&&cur<e)?'<span style="color:#10b981;font-size:13px">✓</span>':''}
+      <div style="min-width:54px;text-align:right"><div style="font-size:13px;font-weight:800;color:${b.c}">${b.t}</div><div style="font-size:10px;color:var(--mu)">${ds}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.lbl}</div><div style="margin-top:2px">${tag}</div></div>
+      ${del}${isPast?'<span style="color:#059669;font-size:13px;font-weight:800">✓</span>':''}
     </div>`;
     c.appendChild(div);
   });
@@ -625,16 +650,16 @@ function delES(id){events=events.filter(e=>e.id!==id);lss('fo_ev',events);render
 // ════════════════════════════════════════
 function renderPQ(){
   const c=document.getElementById('pqueue'),items=[],n=new Date(),cur=n.getHours()*60+n.getMinutes();
-  assigns.filter(a=>!a.done&&a.due<TODAY).forEach(a=>{const p=pOf(a.proj);items.push({lv:0,txt:`⚠️ متأخر ${Math.abs(dU(a.due))}ي: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#ef4444',aid:a.id});});
-  assigns.filter(a=>!a.done&&a.due===TODAY).forEach(a=>{const p=pOf(a.proj);items.push({lv:0,txt:`🔴 اليوم: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#ef4444',aid:a.id});});
-  assigns.filter(a=>!a.done&&dU(a.due)===1).forEach(a=>{const p=pOf(a.proj);items.push({lv:1,txt:`🟠 بكرا: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#f59e0b',aid:a.id});});
-  assigns.filter(a=>!a.done&&dU(a.due)>1&&dU(a.due)<=7).forEach(a=>{const p=pOf(a.proj);items.push({lv:2,txt:`🟡 ${dU(a.due)} أيام: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#f59e0b'});});
-  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=90)items.push({lv:1,txt:`⏰ ${d}د: ${ev.name}`,sub:`${ev.st}→${ev.en}`,c:'#8b5cf6'});});
-  if(ibItems.length)items.push({lv:3,txt:`📥 ${ibItems.length} في الـ Inbox`,sub:'محتاج تنظيم',c:'#64748b'});
-  if(wfItems.length)items.push({lv:3,txt:`⏳ ${wfItems.length} مستنياها`,sub:'Waiting For',c:'#f59e0b'});
-  if(!items.length){c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--mu);font-size:13px">🎉 مفيش حاجة urgent دلوقتي</div>`;return;}
+  assigns.filter(a=>!a.done&&a.due<TODAY).forEach(a=>{const p=pOf(a.proj);items.push({lv:0,txt:`⚠️ متأخر ${Math.abs(dU(a.due))} يوم: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#ef4444',aid:a.id});});
+  assigns.filter(a=>!a.done&&a.due===TODAY).forEach(a=>{const p=pOf(a.proj);items.push({lv:0,txt:`🔴 تسليم اليوم: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#ef4444',aid:a.id});});
+  assigns.filter(a=>!a.done&&dU(a.due)===1).forEach(a=>{const p=pOf(a.proj);items.push({lv:1,txt:`🟠 تسليم بكرا: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#d97706',aid:a.id});});
+  assigns.filter(a=>!a.done&&dU(a.due)>1&&dU(a.due)<=7).forEach(a=>{const p=pOf(a.proj);items.push({lv:2,txt:`🟡 خلال ${dU(a.due)} أيام: ${a.title}`,sub:`${p.em} ${p.nm}`,c:'#d97706'});});
+  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=90)items.push({lv:1,txt:`⏰ بعد ${d} دقيقة: ${ev.name}`,sub:`${ev.st} → ${ev.en}`,c:'#7c3aed'});});
+  if(ibItems.length)items.push({lv:3,txt:`📥 ${ibItems.length} عنصر في الـ Inbox`,sub:'بحاجة لتنظيم',c:'#64748b'});
+  if(wfItems.length)items.push({lv:3,txt:`⏳ ${wfItems.length} أشخاص مستني ردهم`,sub:'Waiting For',c:'#d97706'});
+  if(!items.length){c.innerHTML=`<div class="card p-4 text-center text-sm" style="color:var(--mu)">🎉 مفيش ضغوطات عاجلة دلوقتي — كل شيء منظم!</div>`;return;}
   items.sort((a,b)=>a.lv-b.lv);
-  c.innerHTML=items.slice(0,7).map(it=>`<div class="pitem" style="border-right-color:${it.c};cursor:${it.aid?'pointer':'default'}" ${it.aid?`onclick="doneA('${it.aid}')" title="اضغط للتحديد كـ Done"`:''}><div style="font-size:13px;font-weight:600">${it.txt}</div><div style="font-size:11px;color:var(--mu);margin-top:2px">${it.sub||''}</div></div>`).join('');
+  c.innerHTML=items.slice(0,7).map(it=>`<div class="pitem" style="border-right-color:${it.c};cursor:${it.aid?'pointer':'default'}" ${it.aid?`onclick="doneA('${it.aid}')" title="اضغط للتحديد كمنجز"`:''}><div style="font-size:13px;font-weight:700">${it.txt}</div><div style="font-size:11px;color:var(--mu);margin-top:2px">${it.sub||''}</div></div>`).join('');
 }
 
 // ════════════════════════════════════════
@@ -642,18 +667,24 @@ function renderPQ(){
 // ════════════════════════════════════════
 function renderBanner(){
   const dow=new Date().getDay(),b=document.getElementById('day-banner');
-  const te=evsForD(TODAY,dow).map(ev=>`${ET[ev.type]?.em||'📌'} ${ev.name} ${ev.st}`).join(' · ');
-  if(UNI[dow]?.has){b.style.cssText='background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(99,102,241,.06));border:1px solid rgba(59,130,246,.2);color:#60a5fa;';b.innerHTML=`🏫 يوم جامعة · ${UNI[dow].s}→${UNI[dow].e} · ${UNI[dow].lbl}${te?`<span style="opacity:.65"> | ${te}</span>`:''}`;
-  }else{b.style.cssText='background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(20,184,166,.04));border:1px solid rgba(16,185,129,.18);color:#34d399;';b.innerHTML=`🆓 يوم حر · ${DAY_AR[dow]}${te?`<span style="opacity:.65"> | ${te}</span>`:''}`;}}
+  const te=evsForD(TODAY,dow).map(ev=>`${ET[ev.type]?.em||'📌'} ${ev.name} (${ev.st})`).join(' · ');
+  if(UNI[dow]?.has){
+    b.style.cssText='background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);color:#1d4ed8;';
+    b.innerHTML=`🏫 يوم جامعة · ${UNI[dow].s} → ${UNI[dow].e} · ${UNI[dow].lbl}${te?`<span style="opacity:.75"> | ${te}</span>`:''}`;
+  }else{
+    b.style.cssText='background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);color:#047857;';
+    b.innerHTML=`🆓 يوم حر من محاضرات الجامعة · ${DAY_AR[dow]}${te?`<span style="opacity:.75"> | ${te}</span>`:''}`;
+  }
+}
 
 function renderAlerts(){
   const items=[],n=new Date(),cur=n.getHours()*60+n.getMinutes();
-  assigns.filter(a=>!a.done&&a.due<TODAY).forEach(a=>items.push({cl:'crit',t:`⚠️ متأخر! ${a.title}`,s:`${pOf(a.proj).em} ${a.due}`}));
-  assigns.filter(a=>!a.done&&a.due===TODAY).forEach(a=>items.push({cl:'crit',t:`🔴 اليوم آخر موعد: ${a.title}`,s:pOf(a.proj).nm}));
+  assigns.filter(a=>!a.done&&a.due<TODAY).forEach(a=>items.push({cl:'crit',t:`⚠️ متأخر! ${a.title}`,s:`${pOf(a.proj).em} الموعد الأصلي: ${a.due}`}));
+  assigns.filter(a=>!a.done&&a.due===TODAY).forEach(a=>items.push({cl:'crit',t:`🔴 اليوم آخر موعد للتسليم: ${a.title}`,s:pOf(a.proj).nm}));
   const tom=new Date();tom.setDate(tom.getDate()+1);const ts=tom.toISOString().slice(0,10);
-  assigns.filter(a=>!a.done&&a.due===ts).forEach(a=>items.push({cl:'high',t:`🟠 بكرا: ${a.title}`,s:pOf(a.proj).nm}));
-  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=90)items.push({cl:'now',t:`⏰ بعد ${d} دقيقة: ${ev.name}`,s:`${ev.st}→${ev.en}`});});
-  const c=document.getElementById('alerts');c.innerHTML=items.map(it=>`<div class="alert ${it.cl}"><div style="font-size:13px;font-weight:700">${it.t}</div>${it.s?`<div style="font-size:11px;opacity:.65;margin-top:2px">${it.s}</div>`:''}</div>`).join('');
+  assigns.filter(a=>!a.done&&a.due===ts).forEach(a=>items.push({cl:'high',t:`🟠 تسليم بكرا: ${a.title}`,s:pOf(a.proj).nm}));
+  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=90)items.push({cl:'now',t:`⏰ بعد ${d} دقيقة: ${ev.name}`,s:`${ev.st} → ${ev.en}`});});
+  const c=document.getElementById('alerts');c.innerHTML=items.map(it=>`<div class="alert ${it.cl}"><div style="font-weight:700">${it.t}</div>${it.s?`<div style="font-size:11px;opacity:.8;margin-top:2px">${it.s}</div>`:''}</div>`).join('');
   const urg=assigns.filter(a=>!a.done&&a.due<=TODAY).length;
   document.getElementById('st-asgn').textContent=urg>0?`${urg}⚠️`:String(assigns.filter(a=>!a.done).length);
 }
@@ -665,7 +696,7 @@ function addAssign(){
   const ti=document.getElementById('a-title').value.trim(),du=document.getElementById('a-due').value;
   if(!ti||!du){toast('أدخل العنوان والتاريخ! ⚠️');return;}
   assigns.push({id:uuid(),title:ti,proj:document.getElementById('a-proj').value,due:du,done:false});
-  lss('fo_as',assigns);document.getElementById('a-title').value='';renderAssigns();renderAlerts();if(curTab==='today')renderPQ();toast('✅ تمت الإضافة!');
+  lss('fo_as',assigns);document.getElementById('a-title').value='';renderAssigns();renderAlerts();if(curTab==='today')renderPQ();toast('✅ تمت الإضافة للتسليمات!');
 }
 function doneA(id){const a=assigns.find(x=>x.id===id);if(a){a.done=!a.done;lss('fo_as',assigns);renderAssigns();renderAlerts();if(curTab==='today')renderPQ();}}
 function delA(id){assigns=assigns.filter(x=>x.id!==id);lss('fo_as',assigns);renderAssigns();renderAlerts();}
@@ -673,28 +704,28 @@ function renderAssigns(){
   const c=document.getElementById('asgn-list');
   const active=assigns.filter(a=>!a.done).sort((a,b)=>a.due.localeCompare(b.due));
   const done=assigns.filter(a=>a.done);
-  if(!active.length&&!done.length){c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--mu);font-size:13px">🎉 مفيش تسليمات دلوقتي</div>`;return;}
+  if(!active.length&&!done.length){c.innerHTML=`<div class="card p-4 text-center text-sm" style="color:var(--mu)">🎉 مفيش تسليمات متأخرة أو مفتوحة حالياً</div>`;return;}
   const row=a=>{
-    const d=dU(a.due);let co='#10b981',lb=fD(a.due);
+    const d=dU(a.due);let co='#059669',lb=fD(a.due);
     if(a.done)co='#64748b';else if(d<0){co='#ef4444';lb=`متأخر ${Math.abs(d)} يوم ⚠️`;}
-    else if(d===0){co='#ef4444';lb='اليوم! 🔴';}else if(d===1){co='#f59e0b';lb='بكرا 🟠';}
-    else if(d<=7){co='#f59e0b';lb=`${d} أيام`;}
+    else if(d===0){co='#ef4444';lb='اليوم! 🔴';}else if(d===1){co='#d97706';lb='بكرا 🟠';}
+    else if(d<=7){co='#d97706';lb=`خلال ${d} أيام`;}
     const p=pOf(a.proj);
-    return`<div class="asgn" style="border-right-color:${co}">
+    return`<div class="card p-3" style="border-right:4px solid ${co}">
       <div style="display:flex;align-items:start;gap:10px">
         <button onclick="doneA('${a.id}')" style="margin-top:2px;width:20px;height:20px;flex-shrink:0;border-radius:50%;border:2px solid ${co};background:${a.done?co:'transparent'};color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center">${a.done?'✓':''}</button>
         <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:600;${a.done?'text-decoration:line-through;opacity:.5':''}">${a.title}</div>
+          <div style="font-size:13px;font-weight:700;${a.done?'text-decoration:line-through;opacity:.5':''}">${a.title}</div>
           <div style="display:flex;gap:6px;margin-top:3px;flex-wrap:wrap">
             ${a.proj?`<span style="font-size:11px;color:var(--mu)">${p.em} ${p.nm}</span>`:''}
             <span style="font-size:11px;padding:1px 8px;border-radius:10px;background:${co}18;color:${co};font-weight:700">${lb}</span>
           </div>
         </div>
-        <button onclick="delA('${a.id}')" style="font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer;padding:2px 4px" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button>
+        <button onclick="delA('${a.id}')" style="font-size:12px;color:var(--mu);background:none;border:none;cursor:pointer;padding:2px 4px" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button>
       </div>
     </div>`;
   };
-  c.innerHTML=active.map(row).join('')+(done.length?`<div class="sechd" style="margin-top:14px">✅ منتهية</div>${done.map(row).join('')}`:'');
+  c.innerHTML=active.map(row).join('')+(done.length?`<div class="sechd" style="margin-top:14px">✅ مهام وتسليمات مكتملة</div>${done.map(row).join('')}`:'');
 }
 
 // ════════════════════════════════════════
@@ -712,8 +743,16 @@ function addEvent(){
 function delEv(id){events=events.filter(e=>e.id!==id);lss('fo_ev',events);renderEvts();renderToday();renderBanner();}
 function renderEvts(){
   const c=document.getElementById('evts-list');
-  if(!events.length){c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--mu);font-size:13px">لا توجد أحداث مضافة</div>`;return;}
-  c.innerHTML=events.map(ev=>{const ei=ET[ev.type]||ET.other;const wn=ev.rec==='weekly'?`كل ${DAY_AR[+ev.wday]}`:fD(ev.date);return`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;border-radius:10px;background:${ei.c}18;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${ei.em}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">${ev.name}</div><div style="font-size:11px;color:var(--mu)">${wn} · ${ev.st}→${ev.en}</div></div><button onclick="delEv('${ev.id}')" style="font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button></div>`;}).join('');
+  if(!events.length){c.innerHTML=`<div class="card p-4 text-center text-sm" style="color:var(--mu)">لا توجد أحداث أو قداسات مضافة بعد</div>`;return;}
+  c.innerHTML=events.map(ev=>{
+    const ei=ET[ev.type]||ET.other;
+    const wn=ev.rec==='weekly'?`كل ${DAY_AR[+ev.wday]}`:fD(ev.date);
+    return`<div class="card p-3 flex items-center gap-3">
+      <div style="width:36px;height:36px;border-radius:10px;background:${ei.c}18;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${ei.em}</div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">${ev.name}</div><div style="font-size:11px;color:var(--mu)">${wn} · ${ev.st} → ${ev.en}</div></div>
+      <button onclick="delEv('${ev.id}')" style="font-size:12px;color:var(--mu);background:none;border:none;cursor:pointer" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button>
+    </div>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════
@@ -724,12 +763,12 @@ function renderProjects(){
   g.innerHTML=PROJ.map(p=>`<div class="pcard" style="border-top-color:${p.c}" onclick="openProj('${p.id}')">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <span style="font-size:22px">${p.em}</span>
-      <span class="sbadge sb-${p.st}">${p.st==='active'?'● Active':p.st==='planned'?'○ Planned':p.st==='waiting'?'⏳ Waiting':'⏸ Paused'}</span>
+      <span class="sbadge sb-${p.st}">${p.st==='active'?'● نشط':p.st==='planned'?'○ مخطط':p.st==='waiting'?'⏳ منتظر':'⏸ معلق'}</span>
     </div>
     <div style="font-weight:800;font-size:14px;margin-bottom:4px">${p.nm}</div>
-    <div style="font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.5">${p.goal}</div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.4">${p.goal}</div>
     <div class="pbar"><div class="pfill" style="width:${p.prog}%;background:${p.c}"></div></div>
-    <div style="font-size:10px;color:var(--mu);margin-top:3px;text-align:left">${p.prog}%</div>
+    <div style="font-size:11px;font-weight:700;color:${p.c};margin-top:4px;text-align:left">${p.prog}%</div>
   </div>`).join('');
 }
 
@@ -738,13 +777,16 @@ function openProj(id){
   document.getElementById('proj-detail').classList.remove('hidden');
   document.getElementById('pd-hdr').innerHTML=`<span style="font-size:28px">${p.em}</span><div><div style="font-weight:800;font-size:18px">${p.nm}</div><span class="sbadge sb-${p.st||'active'}">${p.st||'active'}</span></div>`;
   const fin=tasks.filter(t=>t.done).length;
-  document.getElementById('pd-stats').innerHTML=`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:${p.c}">${p.prog}%</div><div style="font-size:11px;color:var(--mu)">Progress</div></div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:#f59e0b">${tasks.filter(t=>!t.done).length}</div><div style="font-size:11px;color:var(--mu)">مهام مفتوحة</div></div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:#10b981">${fin}</div><div style="font-size:11px;color:var(--mu)">منتهية</div></div>`;
+  document.getElementById('pd-stats').innerHTML=`
+    <div class="card p-3 text-center"><div style="font-size:18px;font-weight:800;color:${p.c}">${p.prog}%</div><div style="font-size:11px;color:var(--mu)">الإنجاز</div></div>
+    <div class="card p-3 text-center"><div style="font-size:18px;font-weight:800;color:#d97706">${tasks.filter(t=>!t.done).length}</div><div style="font-size:11px;color:var(--mu)">مهام مفتوحة</div></div>
+    <div class="card p-3 text-center"><div style="font-size:18px;font-weight:800;color:#059669">${fin}</div><div style="font-size:11px;color:var(--mu)">منتهية</div></div>`;
   renderPT(id);document.getElementById('proj-detail').scrollIntoView({behavior:'smooth'});
 }
 function renderPT(id){
   const tasks=ptasks[id]||[];const c=document.getElementById('pd-tasks');const p=pOf(id);
-  if(!tasks.length){c.innerHTML=`<div style="color:var(--mu);font-size:12px;text-align:center;padding:8px">لا توجد مهام — أضف أول مهمة 👇</div>`;return;}
-  c.innerHTML=tasks.map((t,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bd)"><button onclick="togPT('${id}',${i})" style="width:18px;height:18px;border-radius:50%;border:1.5px solid ${t.done?'#10b981':p.c};background:${t.done?'#10b981':'transparent'};color:white;font-size:10px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">${t.done?'✓':''}</button><span style="font-size:13px;flex:1;${t.done?'text-decoration:line-through;opacity:.45':''}">${t.tx}</span><button onclick="delPT('${id}',${i})" style="font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button></div>`).join('');
+  if(!tasks.length){c.innerHTML=`<div style="color:var(--mu);font-size:12px;text-align:center;padding:12px">لا توجد مهام حالياً — أضف أول مهمة لهذا المشروع 👇</div>`;return;}
+  c.innerHTML=tasks.map((t,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)"><button onclick="togPT('${id}',${i})" style="width:18px;height:18px;border-radius:50%;border:1.5px solid ${t.done?'#059669':p.c};background:${t.done?'#059669':'transparent'};color:white;font-size:10px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">${t.done?'✓':''}</button><span style="font-size:13px;font-weight:600;flex:1;${t.done?'text-decoration:line-through;opacity:.45':''}">${t.tx}</span><button onclick="delPT('${id}',${i})" style="font-size:12px;color:var(--mu);background:none;border:none;cursor:pointer" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--mu)'">✕</button></div>`).join('');
 }
 function addPT(){const t=document.getElementById('pd-nt').value.trim();if(!t||!curProjId)return;if(!ptasks[curProjId])ptasks[curProjId]=[];ptasks[curProjId].push({tx:t,done:false});lss('fo_pt',ptasks);document.getElementById('pd-nt').value='';renderPT(curProjId);}
 function togPT(id,i){if(!ptasks[id])return;ptasks[id][i].done=!ptasks[id][i].done;lss('fo_pt',ptasks);renderPT(id);}
@@ -752,16 +794,16 @@ function delPT(id,i){if(!ptasks[id])return;ptasks[id].splice(i,1);lss('fo_pt',pt
 function closeProj(){document.getElementById('proj-detail').classList.add('hidden');curProjId=null;}
 
 // ════════════════════════════════════════
-// POMODORO
+// POMODORO FOCUS
 // ════════════════════════════════════════
 function setPM(mode){
-  pomoMode=mode;const times={work:25*60,short:5*60,long:15*60};const lbs={work:'Deep Work 🚀',short:'راحة قصيرة',long:'راحة طويلة'};
+  pomoMode=mode;const times={work:25*60,short:5*60,long:15*60};const lbs={work:'Deep Work 🚀',short:'راحة قصيرة ☕',long:'راحة أطول 🛋️'};
   pomoSec=pomoTot=times[mode];if(pomoIv){clearInterval(pomoIv);pomoIv=null;pomoRun=false;}
   [{d:'p-disp',r:'p-ring',l:'p-lbl',sb:'p-sbtn',full:527.79},{d:'fo-disp',r:'fo-ring',l:'fo-lbl',sb:'fo-sbtn',full:615.75}].forEach(({d,r,l,sb})=>{
     const de=document.getElementById(d),re=document.getElementById(r),le=document.getElementById(l),se=document.getElementById(sb);
     if(de)de.textContent=fT(pomoSec);if(re)re.style.strokeDashoffset='0';if(le)le.textContent=lbs[mode];if(se)se.textContent='▶ ابدأ';
   });
-  ['work','short','long'].forEach(m=>{const b=document.getElementById(`pm-${m}`);if(!b)return;b.style.borderColor=m===mode?'var(--ac)':'var(--bd)';b.style.color=m===mode?'var(--ac)':'var(--mu)';});
+  ['work','short','long'].forEach(m=>{const b=document.getElementById(`pm-${m}`);if(!b)return;b.style.borderColor=m===mode?'var(--ac)':'var(--bd)';b.style.color=m===mode?'var(--ac)':'var(--mu)';b.style.background=m===mode?'rgba(37,99,235,.08)':'var(--s1)';});
 }
 function pStart(){
   if(pomoRun)return;pomoRun=true;
@@ -777,14 +819,14 @@ function pStart(){
         pomoCnt++;lss(`fo_pc_${TODAY}`,pomoCnt);
         document.getElementById('p-cnt').textContent=String((pomoCnt%4)+1);
         document.getElementById('st-pomo').textContent=String(pomoCnt);
-        const proj=document.getElementById('p-proj')?.value||'',task=document.getElementById('p-task')?.value||'مذاكرة';
+        const proj=document.getElementById('p-proj')?.value||'',task=document.getElementById('p-task')?.value||'مذاكرة وتركيز';
         const n2=new Date();
         pomoLog.unshift({s:task,p:proj,t:`${String(n2.getHours()).padStart(2,'0')}:${String(n2.getMinutes()).padStart(2,'0')}`});
         lss(`fo_pl_${TODAY}`,pomoLog);renderPLog();
         const sm={Aerodynamics:'aero',Structures:'struct','Intro to Aeronautics':'intro',Seminar:'sem','Mechanical Vibration':'vib','Mechanical Design':'design'};
         if(sm[task]){subsDone[sm[task]]=true;lss(`fo_sd_${WK}`,subsDone);}
-        if('Notification' in window&&Notification.permission==='granted')new Notification('🎉 جلسة انتهت!',{body:`${pOf(proj).em} ${task} — استاحل 💪`});
-        toast('🎉 جلسة انتهت! استاحل 💪');
+        if('Notification' in window&&Notification.permission==='granted')new Notification('🎉 عاش يا بطل! أنهيت جلسة كاملة',{body:`${pOf(proj).em} ${task} — خد راحة مستحقة 💪`});
+        toast('🎉 عاش! أنهيت جلسة تركيز كاملة 💪');
       }
       setPM(pomoMode==='work'?(pomoCnt%4===0?'long':'short'):'work');
     }
@@ -793,14 +835,14 @@ function pStart(){
 function pPause(){if(pomoRun){clearInterval(pomoIv);pomoRun=false;[{sb:'p-sbtn'},{sb:'fo-sbtn'}].forEach(({sb})=>{const e=document.getElementById(sb);if(e)e.textContent='▶ ابدأ';});}}
 function pReset(){pPause();setPM(pomoMode);}
 function renderPLog(){
-  const l=document.getElementById('p-log');if(!pomoLog.length){l.innerHTML='<p style="text-align:center;padding:8px">لا يوجد بعد 🎯</p>';return;}
-  l.innerHTML=pomoLog.slice(0,10).map(e=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding:5px 0"><span>${pOf(e.p).em||'📚'} ${e.s}</span><span>${e.t}</span></div>`).join('');
+  const l=document.getElementById('p-log');if(!pomoLog.length){l.innerHTML='<p style="text-align:center;padding:8px">لا توجد جلسات مسجلة اليوم بعد 🎯</p>';return;}
+  l.innerHTML=pomoLog.slice(0,10).map(e=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding:6px 0"><span style="font-weight:600">${pOf(e.p).em||'📚'} ${e.s}</span><span style="color:var(--mu)">${e.t}</span></div>`).join('');
 }
 function capDistr(){
-  ['p-distr','fo-distr'].forEach(id=>{const el=document.getElementById(id);if(!el||!el.value.trim())return;ibItems.unshift({id:uuid(),text:el.value.trim(),ts:TODAY,type:'dist'});lss('fo_ib',ibItems);el.value='';toast('💾 محفوظ — ارجع للتركيز!');});
+  ['p-distr','fo-distr'].forEach(id=>{const el=document.getElementById(id);if(!el||!el.value.trim())return;ibItems.unshift({id:uuid(),text:el.value.trim(),ts:TODAY,type:'dist'});lss('fo_ib',ibItems);el.value='';toast('💾 اتسجلت في الـ Inbox — ارجع لتركيزك!');});
 }
 function openFov(){
-  const t=document.getElementById('p-task')?.value||'التركيز',p=document.getElementById('p-proj')?.value||'';
+  const t=document.getElementById('p-task')?.value||'جلسة تركيز عميق',p=document.getElementById('p-proj')?.value||'';
   document.getElementById('fo-task').textContent=t;
   document.getElementById('fo-proj').textContent=pOf(p).em+' '+pOf(p).nm;
   document.getElementById('fov').classList.add('on');
@@ -808,21 +850,21 @@ function openFov(){
 function closeFov(){document.getElementById('fov').classList.remove('on');}
 
 // ════════════════════════════════════════
-// INBOX
+// INBOX & WAITING FOR
 // ════════════════════════════════════════
-function addIB(){const t=document.getElementById('ib-inp').value.trim();if(!t)return;ibItems.unshift({id:uuid(),text:t,ts:TODAY,type:'gen'});lss('fo_ib',ibItems);document.getElementById('ib-inp').value='';renderIB();toast('📥 محفوظ!');}
+function addIB(){const t=document.getElementById('ib-inp').value.trim();if(!t)return;ibItems.unshift({id:uuid(),text:t,ts:TODAY,type:'gen'});lss('fo_ib',ibItems);document.getElementById('ib-inp').value='';renderIB();toast('📥 اتحفظت في الـ Inbox!');}
 function delIB(id){ibItems=ibItems.filter(x=>x.id!==id);lss('fo_ib',ibItems);renderIB();}
 function renderIB(){
   const c=document.getElementById('ib-list');
-  document.getElementById('ib-cnt').textContent=ibItems.length?`${ibItems.length} عناصر`:'';
-  if(!ibItems.length){c.innerHTML=`<div style="text-align:center;padding:16px;color:var(--mu);font-size:13px">📭 الـ Inbox فاضي — ممتاز!</div>`;return;}
-  c.innerHTML=ibItems.map(it=>`<div class="ibx"><span style="font-size:16px">${it.type==='dist'?'💭':'📌'}</span><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">${it.text}</div><div style="font-size:10px;color:var(--mu)">${it.ts}</div></div><button onclick="delIB('${it.id}')" style="font-size:13px;color:#10b981;background:none;border:none;cursor:pointer" title="تم التنظيم">✓</button></div>`).join('');
+  document.getElementById('ib-cnt').textContent=ibItems.length?`(${ibItems.length})`:'';
+  if(!ibItems.length){c.innerHTML=`<div class="card p-3 text-center text-sm" style="color:var(--mu)">📭 الـ Inbox فاضي — كل حاجة منظمة!</div>`;return;}
+  c.innerHTML=ibItems.map(it=>`<div class="card p-3 flex items-center gap-3"><span style="font-size:16px">${it.type==='dist'?'💭':'📌'}</span><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">${it.text}</div><div style="font-size:10px;color:var(--mu)">${it.ts}</div></div><button onclick="delIB('${it.id}')" style="font-size:14px;color:#059669;background:none;border:none;cursor:pointer;font-weight:800" title="تم">✓</button></div>`).join('');
 }
-function addWF(){const w=document.getElementById('wf-who').value.trim(),wt=document.getElementById('wf-what').value.trim();if(!w||!wt){toast('أدخل الشخص والمطلوب!');return;}wfItems.unshift({id:uuid(),who:w,what:wt,since:TODAY});lss('fo_wf',wfItems);document.getElementById('wf-who').value='';document.getElementById('wf-what').value='';renderWF();toast('⏳ تمت الإضافة!');}
+function addWF(){const w=document.getElementById('wf-who').value.trim(),wt=document.getElementById('wf-what').value.trim();if(!w||!wt){toast('أدخل اسم الشخص والموضوع!');return;}wfItems.unshift({id:uuid(),who:w,what:wt,since:TODAY});lss('fo_wf',wfItems);document.getElementById('wf-who').value='';document.getElementById('wf-what').value='';renderWF();toast('⏳ اتسجلت في قائمة الانتظار!');}
 function delWF(id){wfItems=wfItems.filter(x=>x.id!==id);lss('fo_wf',wfItems);renderWF();}
 function renderWF(){
-  const c=document.getElementById('wf-list');if(!wfItems.length){c.innerHTML=`<div style="text-align:center;padding:12px;color:var(--mu);font-size:12px">مش مستني حاجة دلوقتي ✅</div>`;return;}
-  c.innerHTML=wfItems.map(w=>`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ac);flex-shrink:0">${w.who[0].toUpperCase()}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">${w.what}</div><div style="font-size:11px;color:var(--mu)">من: ${w.who} · ${w.since}</div></div><button onclick="delWF('${w.id}')" style="font-size:12px;color:#10b981;background:none;border:none;cursor:pointer;font-weight:700" title="وصل">✓</button></div>`).join('');
+  const c=document.getElementById('wf-list');if(!wfItems.length){c.innerHTML=`<div class="card p-3 text-center text-sm" style="color:var(--mu)">مش مستني ردود أو متابعات حالياً ✅</div>`;return;}
+  c.innerHTML=wfItems.map(w=>`<div class="card p-3 flex items-center gap-3"><div style="width:32px;height:32px;border-radius:50%;background:rgba(37,99,235,.1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--ac);flex-shrink:0">${w.who[0].toUpperCase()}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">${w.what}</div><div style="font-size:11px;color:var(--mu)">الشخص: ${w.who} · منذ: ${w.since}</div></div><button onclick="delWF('${w.id}')" style="font-size:13px;color:#059669;background:none;border:none;cursor:pointer;font-weight:800" title="تم الرد">✓</button></div>`).join('');
 }
 
 // ════════════════════════════════════════
@@ -836,33 +878,49 @@ function renderStudy(){
   document.getElementById('wk-lbl').textContent=`${done}/${active.length}`;
   document.getElementById('wk-bar').style.width=`${active.length?Math.round(done/active.length*100):0}%`;
   const list=document.getElementById('subj-list');list.innerHTML='';
-  active.forEach(s=>{const isDone=!!subsDone[s.id];const div=document.createElement('div');div.className=`scard ${isDone?'done':''}`;div.style.borderRightColor=s.c;div.onclick=()=>togSub(s.id);
-  div.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px">${s.em}</span><div style="flex:1"><div style="font-size:13px;font-weight:600;${isDone?'text-decoration:line-through':''}">${s.nm}</div><div style="font-size:11px;color:var(--mu)">${isDone?'✅ تمت':'⏳ لم تُذاكر'}</div></div><div style="width:24px;height:24px;border-radius:50%;border:2px solid ${s.c};display:flex;align-items:center;justify-content:center;font-size:12px;${isDone?`background:${s.c};color:white`:''}">${isDone?'✓':''}</div></div>`;
-  list.appendChild(div);});
+  active.forEach(s=>{
+    const isDone=!!subsDone[s.id];
+    const div=document.createElement('div');div.className=`scard ${isDone?'done':''}`;div.style.borderRightColor=s.c;div.onclick=()=>togSub(s.id);
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:20px">${s.em}</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;${isDone?'text-decoration:line-through':''}">${s.nm}</div><div style="font-size:11px;color:var(--mu)">${isDone?'✅ تم إنجازها هذا الأسبوع':'⏳ لم تُذاكر بعد'}</div></div>
+      <div style="width:24px;height:24px;border-radius:50%;border:2px solid ${s.c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;${isDone?`background:${s.c};color:white`:''}">${isDone?'✓':''}</div>
+    </div>`;
+    list.appendChild(div);
+  });
 }
-function resetWeek(){if(confirm('إعادة تعيين مواد الأسبوع؟')){subsDone={};lss(`fo_sd_${WK}`,{});renderStudy();}}
+function resetWeek(){if(confirm('تأكيد: هل تريد إعادة تعيين مواد الأسبوع الجديد؟')){subsDone={};lss(`fo_sd_${WK}`,{});renderStudy();}}
 
 // ════════════════════════════════════════
 // HABITS
 // ════════════════════════════════════════
 function renderHabits(){
   const g=document.getElementById('hab-grid');g.innerHTML='';
-  HABS.forEach(h=>{const st=habState[h.id]||'none';const div=document.createElement('div');
-  div.style.cssText='background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px;';
-  div.innerHTML=`<div style="font-size:26px;margin-bottom:6px">${h.em}</div><div style="font-size:12px;font-weight:600;margin-bottom:10px;color:var(--mu2)">${h.nm}</div><div style="display:flex;gap:4px"><button class="hbtn ${st==='done'?'hd':''}" onclick="setHab('${h.id}','done')">✅ تم</button><button class="hbtn ${st==='missed'?'hm':''}" onclick="setHab('${h.id}','missed')">❌ فاتني</button></div>`;
-  g.appendChild(div);});updHab();renderStreak();if(wrkSess>=0)setWS(wrkSess);
+  HABS.forEach(h=>{
+    const st=habState[h.id]||'none';
+    const div=document.createElement('div');
+    div.className='card p-3';
+    div.innerHTML=`<div style="font-size:24px;margin-bottom:4px">${h.em}</div>
+      <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--tx)">${h.nm}</div>
+      <div style="display:flex;gap:4px">
+        <button class="hbtn ${st==='done'?'hd':''}" onclick="setHab('${h.id}','done')">✅ تم</button>
+        <button class="hbtn ${st==='missed'?'hm':''}" onclick="setHab('${h.id}','missed')">❌ فاتني</button>
+      </div>`;
+    g.appendChild(div);
+  });
+  updHab();renderStreak();if(wrkSess>=0)setWS(wrkSess);
 }
 function setHab(id,st){habState[id]=habState[id]===st?'none':st;lss(`fo_hb_${TODAY}`,habState);renderHabits();document.getElementById('st-sleep').textContent=habState['sleep']==='done'?'✅':'—';document.getElementById('st-gym').textContent=habState['gym']==='done'?'✅':'—';}
 function updHab(){const done=HABS.filter(h=>habState[h.id]==='done').length;const p=Math.round(done/HABS.length*100);document.getElementById('h-pct').textContent=`${p}%`;document.getElementById('h-bar').style.width=`${p}%`;}
 function setWS(n){wrkSess=n;lss(`fo_ws_${TODAY}`,n);const em={2:'✅',1:'🟡',0:'⬜'};document.getElementById('ws-ico').textContent=em[n];document.querySelectorAll('.ws').forEach((b,i)=>{b.classList.remove('ws2','ws1','ws0');if([2,1,0][i]===n)b.classList.add(`ws${n}`);});}
 function renderStreak(){
   const g=document.getElementById('streak'),td=new Date().getDay();
-  g.innerHTML=`<div style="grid-column:1/-1;font-size:10px;font-weight:800;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">سترايك الأسبوع</div>`+
-  DAY_SH.map((d,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:10px;color:var(--mu)">${d}</div><div style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;${i===td?'background:var(--ac);color:white;font-weight:800':i<td?'background:rgba(16,185,129,.2);color:#10b981':'background:var(--s2);color:var(--mu)'}">${i===td?'📍':i<td?'✓':'·'}</div></div>`).join('');
+  g.innerHTML=`<div style="grid-column:1/-1;font-size:11px;font-weight:800;color:var(--mu);margin-bottom:4px">التزام الأسبوع الحالي</div>`+
+  DAY_SH.map((d,i)=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:11px;color:var(--mu)">${d}</div><div style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;${i===td?'background:var(--ac);color:white':i<td?'background:rgba(5,150,105,.15);color:#059669':'background:var(--s2);color:var(--mu)'}">${i===td?'📍':i<td?'✓':'·'}</div></div>`).join('');
 }
 
 // ════════════════════════════════════════
-// TABS
+// TABS SWITCHING
 // ════════════════════════════════════════
 const TABS=['today','agenda','projects','focus','inbox','study','habits'];
 function sw(tab){
@@ -883,19 +941,16 @@ function swA(t){
 }
 
 // ════════════════════════════════════════
-// TOAST
+// TOAST & NOTIFICATIONS
 // ════════════════════════════════════════
 let toastT=null;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';if(toastT)clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',3000);}
 
-// ════════════════════════════════════════
-// NOTIFICATIONS
-// ════════════════════════════════════════
 if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
 function chkRem(){
   const n=new Date(),cur=n.getHours()*60+n.getMinutes();
-  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=30&&d>25&&Notification.permission==='granted')new Notification(`⏰ بعد 30 دقيقة: ${ev.name}`,{body:`${ev.st}→${ev.en}`});});
-  if(!sessionStorage.getItem('fo_na')){sessionStorage.setItem('fo_na','1');const urg=assigns.filter(a=>!a.done&&a.due<=TODAY);if(urg.length&&Notification.permission==='granted')new Notification(`⚠️ ${urg.length} تسليم عاجل!`,{body:urg.map(a=>a.title).slice(0,3).join('\n')});}
+  evsForD(TODAY,n.getDay()).forEach(ev=>{const d=t2m(ev.st)-cur;if(d>0&&d<=30&&d>25&&Notification.permission==='granted')new Notification(`⏰ بعد 30 دقيقة: ${ev.name}`,{body:`${ev.st} → ${ev.en}`});});
+  if(!sessionStorage.getItem('fo_na')){sessionStorage.setItem('fo_na','1');const urg=assigns.filter(a=>!a.done&&a.due<=TODAY);if(urg.length&&Notification.permission==='granted')new Notification(`⚠️ عندك ${urg.length} تسليمات عاجلة!`,{body:urg.map(a=>a.title).slice(0,3).join('\n')});}
 }
 
 // ════════════════════════════════════════
@@ -903,7 +958,6 @@ function chkRem(){
 // ════════════════════════════════════════
 document.getElementById('a-due').value=TODAY;
 document.getElementById('e-date').value=TODAY;
-if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
 renderBanner();renderAlerts();renderToday();renderPLog();
 document.getElementById('st-pomo').textContent=String(pomoCnt);
 document.getElementById('st-sleep').textContent=habState['sleep']==='done'?'✅':'—';
